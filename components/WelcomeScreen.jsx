@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-//import { NativeBaseProvider, Box, Text, Button, Center } from 'native-base';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { NativeBaseProvider, Box, Text, Button, Center } from 'native-base';
+import { View, TextInput, StyleSheet } from 'react-native';
 
 import {
     createUserWithEmailAndPassword,
@@ -113,29 +113,6 @@ function WelcomeScreen({ navigation }) {
         </ScrollView>
     );
 }
-
-    // return (
-    //     <NativeBaseProvider>
-    //         <Center flex={1} bg="coolGray.100" px={4}>
-    //             <Box alignItems="center">
-    //                 <Text fontSize="4xl" fontWeight="bold" color="primary.500" mb={4}>
-    //                     Welcome to the App!
-    //                 </Text>
-    //                 <Text fontSize="md" color="coolGray.600" mb={6} textAlign="center">
-    //                     We're excited to have you here. Click below to get started.
-    //                 </Text>
-    //                 <Button
-    //                     size="lg"
-    //                     colorScheme="primary"
-    //                     onPress={() => navigation.navigate('Login')} //AuthScreen
-    //                 >
-    //                     Get Started
-    //                 </Button>
-    //             </Box>
-    //         </Center>
-    //     </NativeBaseProvider>
-    // );
-
 
 export default WelcomeScreen;
 
