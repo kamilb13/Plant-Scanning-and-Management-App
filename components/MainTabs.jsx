@@ -7,7 +7,9 @@ import AccountScreen from "./AccountScreen";
 
 const Tab = createBottomTabNavigator();
 
-function MainTabs() {
+function MainTabs({route}) {
+    const { handleAuthentication } = route.params;
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -31,7 +33,12 @@ function MainTabs() {
         >
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Profile" component={ProfileScreen} />
-            <Tab.Screen name="Account" component={AccountScreen} />
+            {/*<Tab.Screen name="Account" component={AccountScreen}/>*/}
+            <Tab.Screen
+                name="Account"
+                component={AccountScreen}
+                initialParams={{ handleAuthentication }}
+            />
         </Tab.Navigator>
     );
 }
