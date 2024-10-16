@@ -7,6 +7,11 @@ import AccountScreen from "./AccountScreen";
 
 const Tab = createBottomTabNavigator();
 
+const optionScreen = {
+    headerShown: true,
+    tabBarShowLabel: true
+}
+
 function MainTabs({route}) {
     const { handleAuthentication } = route.params;
 
@@ -31,13 +36,14 @@ function MainTabs({route}) {
                 tabBarStyle: { backgroundColor: '#fff' },
             })}
         >
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Profile" component={ProfileScreen} />
+            <Tab.Screen name="Home" component={HomeScreen} options={optionScreen}/>
+            <Tab.Screen name="Profile" component={ProfileScreen} options={optionScreen}/>
             {/*<Tab.Screen name="Account" component={AccountScreen}/>*/}
             <Tab.Screen
                 name="Account"
                 component={AccountScreen}
                 initialParams={{ handleAuthentication }}
+                options={optionScreen}
             />
         </Tab.Navigator>
     );

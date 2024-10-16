@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './components/WelcomeScreen';
 import MainTabs from './components/MainTabs';
 import AuthScreen from "./components/AuthScreen";
+import CameraScreen from "./components/CameraScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,17 +18,23 @@ const firebaseConfig = {
   measurementId: "G-5HH9QQ7JT5"
 };
 
+const optionScreen = {
+    headerShown: false
+}
+
 export default function App() {
 
   return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Welcome">
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <CameraScreen />
 
-          <Stack.Screen name="Main" component={MainTabs} />
-          <Stack.Screen name="Auth" component={AuthScreen} />
-
-        </Stack.Navigator>
-      </NavigationContainer>
+      // <NavigationContainer>
+      //   <Stack.Navigator initialRouteName="Welcome">
+      //     <Stack.Screen name="Welcome" component={WelcomeScreen} options={optionScreen}/>
+      //
+      //     <Stack.Screen name="Main" component={MainTabs} options={optionScreen}/>
+      //     <Stack.Screen name="Auth" component={AuthScreen} options={optionScreen}/>
+      //
+      //   </Stack.Navigator>
+      // </NavigationContainer>
   );
 }
