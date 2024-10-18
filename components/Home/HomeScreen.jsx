@@ -1,5 +1,6 @@
 import React from 'react';
 import { NativeBaseProvider, Box, Text, Button, Center } from 'native-base';
+import CameraScreen from "../CameraScreen";
 
 const HomeScreen = () => {
     return (
@@ -9,9 +10,8 @@ const HomeScreen = () => {
                     <Text fontSize="4xl" fontWeight="bold" color="primary.500">
                         Home Screen
                     </Text>
-                    <Text fontSize="md" color="coolGray.600" mt={2} textAlign="center">
-                        Welcome to your home screen, styled with NativeBase!
-                    </Text>
+                    <CameraScreen />
+
 
                 </Box>
             </Center>

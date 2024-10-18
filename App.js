@@ -25,16 +25,15 @@ const optionScreen = {
 export default function App() {
 
   return (
-      <CameraScreen />
 
-      // <NavigationContainer>
-      //   <Stack.Navigator initialRouteName="Welcome">
-      //     <Stack.Screen name="Welcome" component={WelcomeScreen} options={optionScreen}/>
-      //
-      //     <Stack.Screen name="Main" component={MainTabs} options={optionScreen}/>
-      //     <Stack.Screen name="Auth" component={AuthScreen} options={optionScreen}/>
-      //
-      //   </Stack.Navigator>
-      // </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Welcome">
+          <Stack.Screen name="Welcome" component={WelcomeScreen} options={optionScreen}/>
+
+          <Stack.Screen name="Main" component={MainTabs} options={optionScreen}/>
+          <Stack.Screen name="Auth" component={AuthScreen} options={optionScreen}/>
+
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
