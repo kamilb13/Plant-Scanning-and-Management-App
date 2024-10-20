@@ -5,6 +5,7 @@ import WelcomeScreen from './components/WelcomeScreen';
 import MainTabs from './components/MainTabs';
 import AuthScreen from "./components/AuthScreen";
 import CameraScreen from "./components/CameraScreen";
+import { AuthProvider } from './components/Auth/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,15 +26,16 @@ const optionScreen = {
 export default function App() {
 
   return (
+    <AuthProvider>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Welcome">
+              <Stack.Screen name="Welcome" component={WelcomeScreen} options={optionScreen}/>
 
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Welcome">
-          <Stack.Screen name="Welcome" component={WelcomeScreen} options={optionScreen}/>
+              <Stack.Screen name="Main" component={MainTabs} options={optionScreen}/>
+              <Stack.Screen name="Auth" component={AuthScreen} options={optionScreen}/>
 
-          <Stack.Screen name="Main" component={MainTabs} options={optionScreen}/>
-          <Stack.Screen name="Auth" component={AuthScreen} options={optionScreen}/>
-
-        </Stack.Navigator>
-      </NavigationContainer>
+            </Stack.Navigator>
+          </NavigationContainer>
+    </AuthProvider>
   );
 }

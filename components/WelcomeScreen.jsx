@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { NativeBaseProvider, Box, Text, Button, Center } from 'native-base';
-import { View, TextInput, StyleSheet } from 'react-native';
 
 import {
     createUserWithEmailAndPassword,
@@ -12,32 +11,16 @@ import {
 import {ScrollView} from "react-native";
 import AuthenticatedScreen from "./AuthenticatedScreen";
 import AuthScreen from "./AuthScreen";
-import {initializeApp} from "@firebase/app";
-
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBv6GyzKHwLnZfLgCeR1FvN_w147TfyuxA",
-    authDomain: "garden-app-f715b.firebaseapp.com",
-    projectId: "garden-app-f715b",
-    storageBucket: "garden-app-f715b.appspot.com",
-    messagingSenderId: "401179222160",
-    appId: "1:401179222160:web:c2bb3b5fd762dc0e8bb815",
-    measurementId: "G-5HH9QQ7JT5"
-};
-
-const app = initializeApp(firebaseConfig);
-
+import {AuthContext} from "./Auth/AuthContext";
 
 function WelcomeScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
     const [isLogin, setIsLogin] = useState(true);
-
     const [errorMessage, setErrorMessage] = useState('');
+    const { auth } = useContext(AuthContext);
 
-
-    const auth = getAuth(app);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {

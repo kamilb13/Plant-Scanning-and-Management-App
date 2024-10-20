@@ -65,8 +65,8 @@ const CameraScreen = () => {
     };
 
     async function sendPhotoToApi(photoBase64: string) {
-        const apiUrl = '...';
-        const apiKey = '...';
+        const apiUrl = 'https://plant.id/api/v3/identification';
+        const apiKey = 'WSgp0SApuIJntKf2l5kX1armviHssN0xmwiMLO9Er4ORL9KZSU';
 
         const body = {
             images: [`data:image/jpg;base64,${photoBase64}`],
