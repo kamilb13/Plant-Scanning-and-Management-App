@@ -6,11 +6,12 @@ import MainTabs from './components/MainTabs';
 import AuthScreen from "./components/AuthScreen";
 import CameraScreen from "./components/CameraScreen";
 import { AuthProvider } from './components/Auth/AuthContext';
+import {PlantDataProvider} from "./components/PlantDataContext/PlantDataContext";
 
 const Stack = createNativeStackNavigator();
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBv6GyzKHwLnZfLgCeR1FvN_w147TfyuxA",
+  apiKey: "...",
   authDomain: "garden-app-f715b.firebaseapp.com",
   projectId: "garden-app-f715b",
   storageBucket: "garden-app-f715b.appspot.com",
@@ -27,6 +28,8 @@ export default function App() {
 
   return (
     <AuthProvider>
+      {/*PlantDataProvider to na razie potem to zmienic*/}
+      <PlantDataProvider>
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Welcome">
               <Stack.Screen name="Welcome" component={WelcomeScreen} options={optionScreen}/>
@@ -36,6 +39,7 @@ export default function App() {
 
             </Stack.Navigator>
           </NavigationContainer>
+      </PlantDataProvider>
     </AuthProvider>
   );
 }

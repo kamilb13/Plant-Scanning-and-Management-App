@@ -1,17 +1,25 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import {useRef, useState} from 'react';
+import {useContext, useEffect, useRef, useState} from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Image } from 'react-native';
 import PlantInfo from "./PlantInfo";
-
+import {AuthContext} from "./Auth/AuthContext";
+import * as FileSystem from 'expo-file-system';
+import {PlantDataContext} from "./PlantDataContext/PlantDataContext";
 const CameraScreen = () => {
     const [facing, setFacing] = useState<CameraType>('back');
     const [permission, requestPermission] = useCameraPermissions();
     const [photo, setPhoto] = useState<string | null>(null);
-    const cameraRef = useRef<CameraView>(null); // Referencja do kamery
+    const cameraRef = useRef<CameraView>(null);
     const [cameraVisible, setCameraVisible] = useState(true);
     const [plantData, setPlantData] = useState<{ name: string; probability: number } | null>(null);
+    const { addPlant } = useContext(PlantDataContext);
 
+    const savePlantData = () => {
+        if (plantData) {
+            addPlant(plantData.name, plantData.probability);
+        }
+    };
     if (!permission) {
         return <View />;
     }
@@ -31,7 +39,7 @@ const CameraScreen = () => {
 
     async function takePhoto() {
         if (cameraRef.current) {
-            const options = { quality: 1, base64: true }; // Opcje zdjęcia
+            const options = { quality: 1, base64: true };
             const newPhoto = await cameraRef.current.takePictureAsync(options);
             setPhoto(newPhoto.base64);
             setCameraVisible(false);
@@ -39,8 +47,6 @@ const CameraScreen = () => {
             const apiResponse = await sendPhotoToApi(newPhoto.base64);
 
             if (apiResponse) {
-                console.log("Odpowiedź z API:", apiResponse);
-
                 const isPlant = apiResponse.result.is_plant;
                 if (isPlant.binary) {
                     const suggestions = apiResponse.result.classification.suggestions;
@@ -66,7 +72,7 @@ const CameraScreen = () => {
 
     async function sendPhotoToApi(photoBase64: string) {
         const apiUrl = 'https://plant.id/api/v3/identification';
-        const apiKey = 'WSgp0SApuIJntKf2l5kX1armviHssN0xmwiMLO9Er4ORL9KZSU';
+        const apiKey = '...';
 
         const body = {
             images: [`data:image/jpg;base64,${photoBase64}`],
@@ -82,8 +88,8 @@ const CameraScreen = () => {
                 body: JSON.stringify(body),
             });
 
-            const data = await response.json();
-            return data;
+            //const data = await response.json();
+            return await response.json();
         } catch (error) {
             console.error("Błąd podczas wysyłania zdjęcia do API", error);
             return null;
@@ -123,6 +129,7 @@ const CameraScreen = () => {
                             onRetake={resetPhoto}
                         />
                     )}
+                    <Button title="Dodaj roślinę do bazy" onPress={savePlantData} />
                 </View>
             )}
         </View>

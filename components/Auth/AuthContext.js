@@ -1,7 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from '@firebase/auth';
-import { getFirestore } from '@firebase/firestore';
+import { getFirestore, collection, addDoc } from '@firebase/firestore';
 import { initializeApp } from '@firebase/app';
+import { getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBv6GyzKHwLnZfLgCeR1FvN_w147TfyuxA",
@@ -16,8 +17,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-
 export const AuthContext = createContext();
+
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
 
         return () => unsubscribe();
     }, []);
+
 
     return (
         <AuthContext.Provider value={{ user, db, auth }}>
