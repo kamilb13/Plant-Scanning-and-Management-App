@@ -1,9 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import HomeScreen from "./Home/HomeScreen";
-import ProfileScreen from "./ProfileScreen";
-import AccountScreen from "./AccountScreen";
+import HomeScreen from "../../screens/HomeScreen/HomeScreen";
+import MyPlantsScreen from "../../screens/MyPlantsScreen/MyPlantsScreen";
+import AccountScreen from "../../screens/AccountScreen/AccountScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,8 +23,8 @@ function MainTabs({route}) {
 
                     if (route.name === 'Home') {
                         iconName = focused ? 'home' : 'home-outline';
-                    } else if (route.name === 'Profile') {
-                        iconName = focused ? 'person' : 'person-outline';
+                    } else if (route.name === 'My Plants') {
+                        iconName = focused ? 'leaf' : 'leaf-outline';
                     } else if (route.name === 'Account') {
                         iconName = focused ? 'accessibility' : 'accessibility-outline';
                     }
@@ -37,7 +37,7 @@ function MainTabs({route}) {
             })}
         >
             <Tab.Screen name="Home" component={HomeScreen} options={optionScreen}/>
-            <Tab.Screen name="Profile" component={ProfileScreen} options={optionScreen}/>
+            <Tab.Screen name="My Plants" component={MyPlantsScreen} options={optionScreen}/>
             {/*<Tab.Screen name="Account" component={AccountScreen}/>*/}
             <Tab.Screen
                 name="Account"

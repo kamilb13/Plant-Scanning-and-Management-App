@@ -9,9 +9,9 @@ import {
     signOut
 } from "@firebase/auth";
 import {ScrollView} from "react-native";
-import AuthenticatedScreen from "./AuthenticatedScreen";
-import AuthScreen from "./AuthScreen";
-import {AuthContext} from "./Auth/AuthContext";
+import AuthenticatedScreen from "../../components/AuthenticatedComponent/AuthenticatedScreen";
+import AuthScreen from "../../components/AuthComponent/AuthScreen";
+import {AuthContext} from "../../contexts/AuthContext/AuthContext";
 
 function WelcomeScreen({ navigation }) {
     const [email, setEmail] = useState('');
@@ -77,7 +77,6 @@ function WelcomeScreen({ navigation }) {
         <NativeBaseProvider>
             <Center flex={1} px={4}>
                 <Box alignItems="center" width="100%">
-                    {errorMessage ? <Text>{errorMessage}</Text> : null}
                     {user ? (
                         <AuthenticatedScreen
                             navigation={navigation}
@@ -85,15 +84,19 @@ function WelcomeScreen({ navigation }) {
                             handleAuthentication={handleAuthentication}
                         />
                     ) : (
-                        <AuthScreen
-                            email={email}
-                            setEmail={setEmail}
-                            password={password}
-                            setPassword={setPassword}
-                            isLogin={isLogin}
-                            setIsLogin={setIsLogin}
-                            handleAuthentication={handleAuthentication}
-                        />
+                        <>
+                            {errorMessage ? <Text>{errorMessage}</Text> : null}
+                            <AuthScreen
+                                email={email}
+                                setEmail={setEmail}
+                                password={password}
+                                setPassword={setPassword}
+                                isLogin={isLogin}
+                                setIsLogin={setIsLogin}
+                                handleAuthentication={handleAuthentication}
+                            />
+                        </>
+
                     )}
                 </Box>
             </Center>

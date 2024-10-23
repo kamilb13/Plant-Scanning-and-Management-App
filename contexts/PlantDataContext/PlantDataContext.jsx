@@ -11,13 +11,24 @@ export const PlantDataProvider = ({ children }) => {
 
 
     const addPlant = (newPlant) => {
+        console.log("nowa roslina " + JSON.stringify(newPlant))
         setPlants([...plants, newPlant])
     };
 
 
+    const removePlant = (id) => {
+        setPlants(plants.filter(plant => plant.id !== id));
+        console.log(id);
+        console.log(JSON.stringify(plants));
+    };
+
+
+
+
+
 
     return (
-        <PlantDataContext.Provider value={{ plants, setPlants, addPlant }}>
+        <PlantDataContext.Provider value={{ plants, setPlants, addPlant, removePlant }}>
             {children}
         </PlantDataContext.Provider>
     );

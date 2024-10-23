@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import WelcomeScreen from './components/WelcomeScreen';
-import MainTabs from './components/MainTabs';
-import AuthScreen from "./components/AuthScreen";
-import CameraScreen from "./components/CameraScreen";
-import { AuthProvider } from './components/Auth/AuthContext';
-import {PlantDataProvider} from "./components/PlantDataContext/PlantDataContext";
+import WelcomeScreen from './screens/WelcomeScreen/WelcomeScreen';
+import MainTabs from './components/BottomNavigation/MainTabs';
+import AuthScreen from "./components/AuthComponent/AuthScreen";
+import CameraComponent from "./components/CameraComponent/CameraComponent";
+import { AuthProvider } from './contexts/AuthContext/AuthContext';
+import {PlantDataProvider} from "./contexts/PlantDataContext/PlantDataContext";
+import {LogBox} from "react-native";
 
 const Stack = createNativeStackNavigator();
 
 const firebaseConfig = {
-  apiKey: "...",
+  apiKey: "AIzaSyBv6GyzKHwLnZfLgCeR1FvN_w147TfyuxA",
   authDomain: "garden-app-f715b.firebaseapp.com",
   projectId: "garden-app-f715b",
   storageBucket: "garden-app-f715b.appspot.com",
@@ -25,6 +26,16 @@ const optionScreen = {
 }
 
 export default function App() {
+    //!!!
+    useEffect(() => {
+        LogBox.ignoreLogs(['In React 18, SSRProvider is not necessary and is a noop. You can remove it from your app.']);
+        LogBox.ignoreLogs([
+            'Non-serializable values were found in the navigation state',
+        ]);
+        LogBox.ignoreLogs([
+            '@firebase/auth: Auth (.*): You are initializing Firebase Auth for React Native without providing AsyncStorage.',
+        ]);
+    }, []);
 
   return (
     <AuthProvider>
