@@ -5,6 +5,8 @@ import { Image } from 'react-native';
 import PlantInfo from "../PlantInfoComponent/PlantInfo";
 import {AuthContext} from "../../contexts/AuthContext/AuthContext";
 import * as FileSystem from 'expo-file-system';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import {PlantDataContext} from "../../contexts/PlantDataContext/PlantDataContext";
 const CameraComponent = () => {
     const [facing, setFacing] = useState<CameraType>('back');
@@ -129,16 +131,14 @@ const CameraComponent = () => {
     console.log(cameraVisible)
     return (
         <View style={styles.container}>
-
-
             {cameraVisible ? (
                 <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-                            <Text style={styles.text}>Flip Camera</Text>
+                            <Icon name="camera-reverse" size={30} color="#ffffff" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.button} onPress={takePhoto}>
-                            <Text style={styles.text}>Take Photo</Text>
+                            <Icon name="camera" size={30} color="#ffffff" />
                         </TouchableOpacity>
                     </View>
                 </CameraView>
@@ -177,9 +177,9 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     camera: {
-        width: '80%',
-        height: '50%',
+        height: '80%',
         alignSelf: 'center',
+        aspectRatio: 9 / 16
     },
     buttonContainer: {
         flex: 1,

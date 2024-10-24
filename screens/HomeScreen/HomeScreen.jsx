@@ -6,9 +6,9 @@ const HomeScreen = () => {
     return (
         <NativeBaseProvider>
             <Center flex={1} px={4}>
-                <Box alignItems="center">
+                <Box alignItems="center" >
                     <Text
-                        fontSize="5xl"
+                        fontSize="3xl"
                         fontWeight="bold"
                         color="primary.500"
                         textAlign="center"

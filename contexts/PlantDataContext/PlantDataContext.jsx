@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from '@firebase/auth';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -12,7 +13,9 @@ export const PlantDataProvider = ({ children }) => {
 
     const addPlant = (newPlant) => {
         console.log("nowa roslina " + JSON.stringify(newPlant))
-        setPlants([...plants, newPlant])
+        const newPlants = [...plants, newPlant]
+        setPlants(newPlants);
+        storePlants(newPlants);
     };
 
 
@@ -23,12 +26,36 @@ export const PlantDataProvider = ({ children }) => {
     };
 
 
+    const storePlants = async (plants) => {
+        try {
+            const jsonValue = JSON.stringify(plants);
+            await AsyncStorage.setItem('@plants_key', jsonValue);
+            console.log('Udalo sie zapisac rosliny');
+        }catch (e){
+            console.log('Blad zapisu' + e);
+        }
+    };
 
+    const getPlants = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('@plants_key');
+            return jsonValue!=null ? JSON.parse(jsonValue) : [];
+        }catch (e){
+            console.log('Blad odczytu' + e);
+        }
+    }
 
+    useEffect(() => {
 
+        const fetchPlants = async () => {
+            const storedPlants = await getPlants();
+            setPlants(storedPlants);
+        };
+        fetchPlants();
+    }, [])
 
     return (
-        <PlantDataContext.Provider value={{ plants, setPlants, addPlant, removePlant }}>
+        <PlantDataContext.Provider value={{ plants, setPlants, addPlant, removePlant, storePlants, getPlants }}>
             {children}
         </PlantDataContext.Provider>
     );
