@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { NativeBaseProvider, Box, Text, Button, Center } from 'native-base';
+import {AuthContext} from "../../contexts/AuthContext/AuthContext";
 
 const AccountScreen = ( { route, navigation} ) => {
-    const { handleAuthentication } = route.params;
+    //const { handleAuthentication } = route.params;
+
+    const {handleAuthentication} = useContext(AuthContext);
 
     const handleLogout = () => {
         handleAuthentication();
