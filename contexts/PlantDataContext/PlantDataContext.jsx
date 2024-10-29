@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from '@firebase/auth';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -45,6 +44,10 @@ export const PlantDataProvider = ({ children }) => {
         }
     }
 
+    const getPlantsCount = () => {
+        return plants.length;
+    }
+
     useEffect(() => {
 
         const fetchPlants = async () => {
@@ -55,7 +58,7 @@ export const PlantDataProvider = ({ children }) => {
     }, [])
 
     return (
-        <PlantDataContext.Provider value={{ plants, setPlants, addPlant, removePlant, storePlants, getPlants }}>
+        <PlantDataContext.Provider value={{ plants, setPlants, addPlant, removePlant, storePlants, getPlants, getPlantsCount }}>
             {children}
         </PlantDataContext.Provider>
     );

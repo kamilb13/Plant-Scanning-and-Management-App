@@ -1,10 +1,8 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import {useContext, useEffect, useRef, useState} from 'react';
+import {useContext, useRef, useState} from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Image } from 'react-native';
 import PlantInfo from "../PlantInfoComponent/PlantInfo";
-import {AuthContext} from "../../contexts/AuthContext/AuthContext";
-import * as FileSystem from 'expo-file-system';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import { PLANT_API_KEY } from '@env';
@@ -20,13 +18,7 @@ const CameraComponent = () => {
     const { addPlant } = useContext(PlantDataContext);
     const [id, setId] = useState(0)
 
-    const savePlantData = () => {
-        if (plantData) {
-            setId(id + 1);
-            //addPlant(id, plantData);
-            addPlant({id, ...plantData})
-        }
-    };
+
     if (!permission) {
         return <View />;
     }
@@ -40,7 +32,7 @@ const CameraComponent = () => {
         );
     }
 
-    function toggleCameraFacing() {
+    const toggleCameraFacing = () => {
         setFacing(current => (current === 'back' ? 'front' : 'back'));
     }
     interface PlantApiResponse {
@@ -63,7 +55,8 @@ const CameraComponent = () => {
             };
         };
     }
-    async function takePhoto() {
+
+    const takePhoto = async () => {
         if (cameraRef.current) {
             const options = { quality: 1, base64: true };
             const newPhoto = await cameraRef.current.takePictureAsync(options);
@@ -143,14 +136,19 @@ const CameraComponent = () => {
         }
     };
 
-
     const resetPhoto = () => {
         setCameraVisible(true);
         setPhoto(null);
     };
 
-    async function sendPhotoToApi(photoBase64: string) {
+    const savePlantData = () => {
+        if (plantData) {
+            setId(id + 1);
+            addPlant({id, ...plantData})
+        }
+    };
 
+    const sendPhotoToApi = async(photoBase64: string) => {
         const apiUrl = 'https://plant.id/api/v3/identification';
         const apiKey = PLANT_API_KEY;
 
@@ -168,7 +166,6 @@ const CameraComponent = () => {
                 body: JSON.stringify(body),
             });
 
-            //const data = await response.json();
             return await response.json();
         } catch (error) {
             console.error("Błąd podczas wysyłania zdjęcia do API", error);
@@ -191,9 +188,7 @@ const CameraComponent = () => {
                             <Icon name="image" size={30} color="#ffffff" />
                         </TouchableOpacity>
                     </View>
-
                 </CameraView>
-
             ) : (
                 <View>
                     {photo && (
@@ -203,8 +198,6 @@ const CameraComponent = () => {
                             style={styles.preview}
                         />
                     )}
-
-
                     {plantData && (
                         <PlantInfo
                             plantName={plantData.name}
@@ -213,7 +206,7 @@ const CameraComponent = () => {
                         />
                     )}
                     <TouchableOpacity style={styles.addPlantButton} onPress={savePlantData}>
-                        <Text style={styles.addPlantButtonText}>Dodaj roślinę do bazy</Text>
+                        <Text style={styles.addPlantButtonText}>Add plant to your collection</Text>
                     </TouchableOpacity>
                 </View>
             )}

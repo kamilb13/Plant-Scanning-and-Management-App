@@ -1,7 +1,13 @@
-import React from "react";
-import { NativeBaseProvider, View, Text, Button, Center, Input, Box } from 'native-base';
+import React, {useContext} from "react";
+import { Text, Button, Input, Box } from 'native-base';
+import {AuthContext} from "../../contexts/AuthContext/AuthContext";
 
-const AuthScreen = ({ email, setEmail, password, setPassword, isLogin, setIsLogin, handleAuthentication }) => {
+const LoginRegisterForm = () => {
+    const { handleAuthentication } = useContext(AuthContext);
+    const { isLogin, setIsLogin } = useContext(AuthContext);
+    const { email, setEmail } = useContext(AuthContext);
+    const { password, setPassword } = useContext(AuthContext);
+
     return (
         <Box width="80%" maxWidth={400} bg="white" p={4} borderRadius="lg" shadow={2}>
             <Text fontSize="2xl" fontWeight="bold" mb={4} textAlign="center">
@@ -44,4 +50,4 @@ const AuthScreen = ({ email, setEmail, password, setPassword, isLogin, setIsLogi
     );
 };
 
-export default AuthScreen;
+export default LoginRegisterForm;

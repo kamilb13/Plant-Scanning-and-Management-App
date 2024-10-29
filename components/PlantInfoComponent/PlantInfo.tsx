@@ -10,13 +10,14 @@ interface PlantInfoProps {
 const PlantInfo: React.FC<PlantInfoProps> = ({ plantName, probability, onRetake }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Rozpoznano roślinę:</Text>
+            <Text style={styles.title}>Plant recognized:</Text>
             <Text style={styles.plantName}>{plantName}</Text>
-            <Text style={styles.probability}>Prawdopodobieństwo: {probability.toFixed(2)}%</Text>
-            <Button title="Zrób zdjęcie ponownie" onPress={onRetake} />
+            <Text style={styles.probability}>Probability: {(probability * 100).toFixed(2)}%</Text>
+            <Button title="Take photo again" onPress={onRetake} />
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {

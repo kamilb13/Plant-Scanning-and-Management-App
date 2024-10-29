@@ -12,7 +12,8 @@ const HomeScreen = () => {
                         fontWeight="bold"
                         color="primary.500"
                         textAlign="center"
-                        mb={6}
+                        mb={3}
+                        pt={4}
                         textShadow={{
                             color: 'gray.600',
                             offset: { width: 1, height: 1 },

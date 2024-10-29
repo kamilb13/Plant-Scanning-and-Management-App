@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import {NativeBaseProvider, Box, Text, Center, FlatList, VStack, Heading, Button} from 'native-base';
-import {PlantDataContext} from "../../contexts/PlantDataContext/PlantDataContext";
+import { NativeBaseProvider, Box, Text, Center, FlatList, VStack, Heading, Button } from 'native-base';
+import { PlantDataContext } from "../../contexts/PlantDataContext/PlantDataContext";
 
 const MyPlantsScreen = () => {
     const { plants, removePlant } = useContext(PlantDataContext);
@@ -18,8 +18,8 @@ const MyPlantsScreen = () => {
                 <Heading size="md">
                     <Text>{index + 1}. {item.name}</Text>
                 </Heading>
-                <Text>Probability: {item.probability * 100}%</Text>
-                <Button onPress={() => removePlant(item.id)}>Usuń roślinę</Button>
+                <Text>Probability: {(item.probability * 100).toFixed(2)}%</Text>
+                <Button onPress={() => removePlant(item.id)}>Remove Plant</Button>
             </VStack>
         </Box>
     );
@@ -28,13 +28,13 @@ const MyPlantsScreen = () => {
         <NativeBaseProvider>
             <Center flex={1} px={4}>
                 {plants.length === 0 ? (
-                    <Text fontSize="2xl">Nie dodałeś jeszcze roślin!</Text>
+                    <Text fontSize="2xl">You haven't added any plants yet!</Text>
                 ) : (
                     <Box alignItems="center" width="100%">
                         <FlatList
                             data={plants}
                             renderItem={renderPlantItem}
-                            keyExtractor={(item) => item.id}
+                            keyExtractor={(item) => item.id.toString()}
                             contentContainerStyle={{ paddingBottom: 16 }}
                         />
                     </Box>

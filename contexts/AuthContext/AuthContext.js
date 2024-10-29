@@ -1,16 +1,15 @@
 import React, { createContext, useState, useEffect } from 'react';
 import {
     createUserWithEmailAndPassword,
-    getAuth,
+    getAuth, getReactNativePersistence, initializeAuth,
     onAuthStateChanged,
     signInWithEmailAndPassword,
     signOut
 } from '@firebase/auth';
-import { getFirestore, collection, addDoc } from '@firebase/firestore';
-import { initializeApp } from '@firebase/app';
-import { getDocs } from "firebase/firestore";
+// import { getReactNativePersistence } from 'firebase/auth/react-native';
+import { getFirestore } from '@firebase/firestore';
 import {
-    FIREBASE_API_KEY,PLANT_API_KEY,
+    FIREBASE_API_KEY,
     FIREBASE_APP_ID,
     FIREBASE_AUTH_DOMAIN,
     FIREBASE_MEASUREMENT_ID,
@@ -18,7 +17,8 @@ import {
     FIREBASE_PROJECT_ID,
     FIREBASE_STORAGE_BUCKET
 } from '@env';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { initializeApp } from '@firebase/app';
 const firebaseConfig = {
     apiKey: FIREBASE_API_KEY,
     authDomain: FIREBASE_AUTH_DOMAIN,
@@ -30,7 +30,9 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app);
+const auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(AsyncStorage)
+});
 export const AuthContext = createContext();
 
 
@@ -105,7 +107,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
     return (
-        <AuthContext.Provider value={{ user, db, auth, handleAuthentication, isLogin, setIsLogin, email, setEmail, password, setPassword }}>
+        <AuthContext.Provider value={{ user, db, auth, handleAuthentication, isLogin, setIsLogin, email, setEmail, password, setPassword, errorMessage,setErrorMessage }}>
             {children}
         </AuthContext.Provider>
     );
