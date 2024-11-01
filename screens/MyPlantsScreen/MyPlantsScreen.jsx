@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     NativeBaseProvider,
     Box,
@@ -14,12 +14,51 @@ import {
 import { PlantDataContext } from "../../contexts/PlantDataContext/PlantDataContext";
 import { IconButton, Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {Image} from "react-native";
 
 const MyPlantsScreen = () => {
     const { plants, removePlant, updatePlantNote } = useContext(PlantDataContext);
+    const [selectedPlant, setSelectedPlant] = useState(null);
+    const [careInstructions, setCareInstructions] = useState({});
+    const [lightIntensity, setLightIntensity] = useState({});
+
+    useEffect(() => {
+        const fetchCareInstructions = async () => {
+            try {
+                const response = await fetch('http://192.168.33.12:3000/care-info');
+                const data = await response.json();
+                const instructions = data.reduce((acc, item) => {
+                    acc[item.name] = item.careInstructions;
+                    return acc;
+                }, {});
+                setCareInstructions(instructions);
+            } catch (error) {
+                console.error("Error fetching care instructions:", error);
+            }
+        };
+
+        fetchCareInstructions();
+    }, [])
+    useEffect(() => {
+        const fetchLightIntensity = async () => {
+            try {
+                const response = await fetch('http://192.168.33.12:3000/care-info');
+                const data = await response.json();
+                const light = data.reduce((acc, item) => {
+                    acc[item.name] = item.lightIntensity;
+                    return acc;
+                }, {});
+                setLightIntensity(light);
+            } catch (error) {
+                console.error("Error care light:", error);
+            }
+        };
+
+        fetchLightIntensity();
+    }, []);
 
     const plantItem = ({item, index}) => {
-        return <Pressable padding={2}>
+        return <Pressable padding={2} onPress={()=> {setSelectedPlant(item)}}>
             {({
                   isHovered,
                   isFocused,
@@ -41,9 +80,9 @@ const MyPlantsScreen = () => {
                             ml={1}
                         />
                     </HStack>
-                    {/*<Text color="coolGray.800" mt="3" fontWeight="light" fontSize="sm">*/}
-                    {/*    Add description*/}
-                    {/*</Text>*/}
+                    <Text color="coolGray.400" fontWeight="light" fontSize={13} mb={2}>
+                        Item probability: {(item.probability*100)}%
+                    </Text>
                     <TextArea
                         placeholder="Add a note..."
                         value={item.note}
@@ -58,17 +97,58 @@ const MyPlantsScreen = () => {
     return (
         <NativeBaseProvider>
             <Center flex={1} px={4}>
-                {plants.length === 0 ? (
-                    <Text fontSize="2xl">You haven't added any plants yet!</Text>
-                ) : (
-                    <Box alignItems="center" width="100%">
-                        <FlatList
-                            data={plants}
-                            renderItem={plantItem}
-                            keyExtractor={(item) => item.id.toString()}
-                            contentContainerStyle={{ paddingBottom: 16 }}
+                {selectedPlant ? (
+                    <VStack space={4} alignItems="center" padding={4} backgroundColor="#f0f4f8" borderRadius={8} shadow={2}>
+                        <Image
+                            source={{ uri: selectedPlant.photo }}
+                            alt={selectedPlant.name}
+                            style={{ width: 300, height: 300, borderRadius: 15 }}
+                            resizeMode="cover"
                         />
-                    </Box>
+                        <Text fontSize="xl" fontWeight="bold" color="#333" textAlign="center">
+                            {selectedPlant.name}
+                        </Text>
+                        <VStack space={2} alignItems="center" padding={4}>
+                            {careInstructions[selectedPlant.name] ? (
+                                careInstructions[selectedPlant.name].map((instruction, index) => (
+                                    <Text key={index} fontSize="md" color="#555" textAlign="center">
+                                        - {instruction}
+                                    </Text>
+                                ))
+                            ) : (
+                                <Text fontSize="md" color="#555" textAlign="center">
+                                    Brak danych
+                                </Text>
+                            )}
+                        </VStack>
+                        <Text>
+                            {console.log(lightIntensity)}
+                            Light intensity: {lightIntensity[selectedPlant.name] ? (lightIntensity[selectedPlant.name]) : (<Text>Brak dancyh</Text>)}
+                        </Text>
+                        <Button
+                            onPress={() => setSelectedPlant(null)}
+                            colorScheme="teal"
+                            size="lg"
+                            variant="solid"
+                            _text={{ fontWeight: 'bold' }}
+                            borderRadius={5}
+                        >
+                            Back to list
+                        </Button>
+                    </VStack>
+                ) : (
+                    plants.length === 0 ? (
+                        <Text fontSize="2xl">You haven't added any plants yet!</Text>
+                    ) : (
+                        <Box alignItems="center" width="100%">
+                            <FlatList
+                                data={plants}
+                                renderItem={plantItem}
+                                keyExtractor={(item) => item.id.toString()}
+                                contentContainerStyle={{ paddingBottom: 16 }}
+                            />
+                        </Box>
+                    )
                 )}
             </Center>
         </NativeBaseProvider>

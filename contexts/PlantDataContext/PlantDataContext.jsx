@@ -36,6 +36,10 @@ export const PlantDataProvider = ({ children }) => {
         }
     }
 
+    const getPlant = () => {
+
+    }
+
     const getPlantsCount = () => {
         return plants.length;
     }

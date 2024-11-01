@@ -14,7 +14,7 @@ const CameraComponent = () => {
     const [photo, setPhoto] = useState<string | null>(null);
     const cameraRef = useRef<CameraView>(null);
     const [cameraVisible, setCameraVisible] = useState(true);
-    const [plantData, setPlantData] = useState<{ name: string; probability: number } | null>(null);
+    const [plantData, setPlantData] = useState<{ name: string; probability: number, photo: string } | null>(null);
     const { addPlant } = useContext(PlantDataContext);
     const [id, setId] = useState(0)
 
@@ -77,7 +77,7 @@ const CameraComponent = () => {
 
                     if (Array.isArray(suggestions) && suggestions.length > 0) {
                         const firstSuggestion = suggestions[0];
-                        setPlantData({ name: firstSuggestion.name, probability: firstSuggestion.probability });
+                        setPlantData({ name: firstSuggestion.name, probability: firstSuggestion.probability, photo: newPhoto.uri });
                     } else {
                         alert("Brak sugestii rozpoznania rośliny.");
                     }
@@ -125,7 +125,7 @@ const CameraComponent = () => {
 
                     if (Array.isArray(suggestions) && suggestions.length > 0) {
                         const firstSuggestion = suggestions[0];
-                        setPlantData({ name: firstSuggestion.name, probability: firstSuggestion.probability });
+                        setPlantData({ name: firstSuggestion.name, probability: firstSuggestion.probability, photo: selectedPhoto });
                     } else {
                         alert("Brak sugestii rozpoznania rośliny.");
                     }
