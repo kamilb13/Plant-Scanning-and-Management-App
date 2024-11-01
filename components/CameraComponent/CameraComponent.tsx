@@ -176,19 +176,25 @@ const CameraComponent = () => {
     return (
         <View style={styles.container}>
             {cameraVisible ? (
-                <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+                <>
+                    <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+                        <View style={styles.buttonContainer}>
+
+                        </View>
+                    </CameraView>
+                    <View style={styles.iconContainer}>
+                        <TouchableOpacity style={styles.iconButton} onPress={toggleCameraFacing}>
                             <Icon name="camera-reverse" size={30} color="#ffffff" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} onPress={takePhoto}>
+                        <TouchableOpacity style={styles.iconButton} onPress={takePhoto}>
                             <Icon name="camera" size={30} color="#ffffff" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button} onPress={pickImage}>
+                        <TouchableOpacity style={styles.iconButton} onPress={pickImage}>
                             <Icon name="image" size={30} color="#ffffff" />
                         </TouchableOpacity>
                     </View>
-                </CameraView>
+                </>
+
             ) : (
                 <View>
                     {photo && (
@@ -224,9 +230,21 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     camera: {
-        height: '80%',
+        height: '60%',
         alignSelf: 'center',
-        aspectRatio: 9 / 16
+        aspectRatio: 1 / 1
+    },
+    iconContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 50,
+    },
+    iconButton: {
+        marginHorizontal: 10,
+        padding: 10,
+        backgroundColor: '#333',
+        borderRadius: 30,
     },
     buttonContainer: {
         flex: 1,
