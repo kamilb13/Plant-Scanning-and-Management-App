@@ -177,11 +177,7 @@ const CameraComponent = () => {
         <View style={styles.container}>
             {cameraVisible ? (
                 <>
-                    <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
-                        <View style={styles.buttonContainer}>
-
-                        </View>
-                    </CameraView>
+                    <CameraView style={styles.camera} facing={facing} ref={cameraRef}/>
                     <View style={styles.iconContainer}>
                         <TouchableOpacity style={styles.iconButton} onPress={toggleCameraFacing}>
                             <Icon name="camera-reverse" size={30} color="#ffffff" />
@@ -232,7 +228,7 @@ const styles = StyleSheet.create({
     camera: {
         height: '60%',
         alignSelf: 'center',
-        aspectRatio: 1 / 1
+        aspectRatio: 1,
     },
     iconContainer: {
         flexDirection: 'row',
@@ -246,13 +242,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#333',
         borderRadius: 30,
     },
-    buttonContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        backgroundColor: 'transparent',
-        margin: 64,
-        justifyContent: 'space-between',
-    },
     button: {
         alignSelf: 'flex-end',
         alignItems: 'center',
@@ -263,9 +252,9 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     preview: {
-        width: 300,
-        height: 300,
+        height: '60%',
         alignSelf: 'center',
+        aspectRatio: 1,
         marginTop: 20,
         borderRadius: 10,
     },
