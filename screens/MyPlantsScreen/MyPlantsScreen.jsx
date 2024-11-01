@@ -15,6 +15,7 @@ import { PlantDataContext } from "../../contexts/PlantDataContext/PlantDataConte
 import { IconButton, Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Image} from "react-native";
+import Luxometer from "../../components/Luxometer";
 
 const MyPlantsScreen = () => {
     const { plants, removePlant, updatePlantNote } = useContext(PlantDataContext);
@@ -122,9 +123,9 @@ const MyPlantsScreen = () => {
                             )}
                         </VStack>
                         <Text>
-                            {console.log(lightIntensity)}
                             Light intensity: {lightIntensity[selectedPlant.name] ? (lightIntensity[selectedPlant.name]) : (<Text>Brak dancyh</Text>)}
                         </Text>
+                        <Luxometer/>
                         <Button
                             onPress={() => setSelectedPlant(null)}
                             colorScheme="teal"
