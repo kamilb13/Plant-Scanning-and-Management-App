@@ -122,10 +122,26 @@ const MyPlantsScreen = () => {
                                 </Text>
                             )}
                         </VStack>
-                        <Text>
-                            Light intensity: {lightIntensity[selectedPlant.name] ? (lightIntensity[selectedPlant.name]) : (<Text>Brak dancyh</Text>)}
-                        </Text>
-                        <Luxometer/>
+
+
+                        <HStack space={4} alignItems="center" justifyContent="center">
+                            <Center
+                                borderWidth={1}
+                                borderRadius={10}
+                                padding={3}
+                                shadow={2}
+                                bgColor="lightBlue.50"
+                                borderColor="blue.400"
+                                alignItems="center"
+                            >
+                                <Text>
+                                    Light intensity: {lightIntensity[selectedPlant.name] ? (lightIntensity[selectedPlant.name] + " lx") : (<Text>Brak dancyh</Text>)}
+                                </Text>
+                            </Center>
+
+                                <Luxometer luxRange={lightIntensity[selectedPlant.name]}/>
+
+                        </HStack>
                         <Button
                             onPress={() => setSelectedPlant(null)}
                             colorScheme="teal"

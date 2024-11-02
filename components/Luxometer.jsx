@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import { LightSensor } from 'expo-sensors';
+import { Button, Text, Box, Center, VStack } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
+//import {MaterialIcons} from "@expo/vector-icons";
 
-const Luxometer = () => {
+const Luxometer = ({luxRange}) => {
     const [{ illuminance }, setData] = useState({ illuminance: 0 });
     const [subscription, setSubscription] = useState(null);
+
+    const [minValue, maxValue] = luxRange.split('-').map(Number);
 
     const toggle = () => {
         if (subscription) {
@@ -27,45 +32,45 @@ const Luxometer = () => {
         setSubscription(null);
     };
 
-    useEffect(() => {
-        subscribe();
-        return () => unsubscribe();
-    }, []);
+    // useEffect(() => {
+    //     //subscribe();
+    //     return () => unsubscribe();
+    // }, []);
 
     return (
-        <View style={styles.sensor}>
-            <Text>Light Sensor:</Text>
-            <Text>
-                Illuminance: {Platform.OS === 'android' ? `${illuminance} lx` : `Only available on Android`}
-            </Text>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={toggle} style={styles.button}>
-                    <Text>Toggle</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+        <Box
+            borderWidth={1}
+            borderRadius={10}
+            padding={3}
+            shadow={2}
+            bgColor="#eced98"
+            borderColor="blue.400"
+            alignItems="center"
+        >
+            {subscription ? (
+                <>
+                    <Text onPress={toggle} fontSize="xl" fontWeight="bold" color="blue.800">
+                        {/*Illuminance:*/}
+                        {Platform.OS === 'android' ? `${illuminance.toFixed(0)} lx` : `Only available on Android`}
+                    </Text>
+                    {/*<Button*/}
+                    {/*    leftIcon={<Ionicons as={Ionicons} name="bulb-outline" size={20} />}*/}
+                    {/*    colorScheme="red"*/}
+                    {/*    onPress={toggle}*/}
+                    {/*    marginTop={2}*/}
+                    {/*>*/}
+                    {/*    Stop*/}
+                    {/*</Button>*/}
+                </>
+            ) : (
+                <>
+                    <Text onPress={toggle} fontSize="lg" color="gray.700">Check it!
+                        <Ionicons as={Ionicons} name="bulb-outline" size={20} />
+                    </Text>
+                </>
+            )}
+        </Box>
     );
 };
-
-const styles = StyleSheet.create({
-    sensor: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 10,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        alignItems: 'stretch',
-        marginTop: 15,
-    },
-    button: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#eee',
-        padding: 10,
-    },
-});
 
 export default Luxometer;
