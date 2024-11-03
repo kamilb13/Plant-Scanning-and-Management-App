@@ -4,7 +4,9 @@ import {
     getAuth, getReactNativePersistence, initializeAuth,
     onAuthStateChanged,
     signInWithEmailAndPassword,
-    signOut
+    signOut,
+    updateEmail, updatePassword,
+    EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification
 } from '@firebase/auth';
 // import { getReactNativePersistence } from 'firebase/auth/react-native';
 import { getFirestore } from '@firebase/firestore';
@@ -106,8 +108,38 @@ export const AuthProvider = ({ children }) => {
             }
         }
     };
+
+    const reauthenticate = async (currentPassword, setErrorMessageForUpdate) => {
+        try {
+            const credential = EmailAuthProvider.credential(user.email, currentPassword);
+            await reauthenticateWithCredential(user, credential);
+            console.log('Re-authentication successful');
+            return true;
+        } catch (error) {
+            setErrorMessageForUpdate('Re-authentication failed: ' + error.message);
+            console.log(error);
+            return false;
+        }
+    };
+
+    const handleUpdatePassword = async (newPassword, currentPassword, setShowSuccess, setErrorMessageForUpdate) => {
+        if (newPassword) {
+            const reAuth = await reauthenticate(currentPassword, setErrorMessageForUpdate);
+            if (reAuth) {
+                try {
+                    await updatePassword(user, newPassword);
+                    setShowSuccess(true);
+                    setErrorMessageForUpdate('');
+                } catch (error) {
+                    setErrorMessageForUpdate('Failed to update email: ' + error.message);
+                }
+            }
+        }
+    };
+
+
     return (
-        <AuthContext.Provider value={{ user, db, auth, handleAuthentication, isLogin, setIsLogin, email, setEmail, password, setPassword, errorMessage,setErrorMessage }}>
+        <AuthContext.Provider value={{ user, db, auth, handleAuthentication, isLogin, setIsLogin, email, setEmail, password, setPassword, errorMessage,setErrorMessage, handleUpdatePassword }}>
             {children}
         </AuthContext.Provider>
     );

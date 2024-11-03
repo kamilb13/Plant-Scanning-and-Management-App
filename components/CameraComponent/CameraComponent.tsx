@@ -6,8 +6,11 @@ import PlantInfo from "../PlantInfoComponent/PlantInfo";
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import { PLANT_API_KEY } from '@env';
+import { doc, setDoc } from "firebase/firestore";
 
 import {PlantDataContext} from "../../contexts/PlantDataContext/PlantDataContext";
+import {AuthContext} from "../../contexts/AuthContext/AuthContext";
+import {get} from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 const CameraComponent = () => {
     const [facing, setFacing] = useState<CameraType>('back');
     const [permission, requestPermission] = useCameraPermissions();
@@ -15,9 +18,9 @@ const CameraComponent = () => {
     const cameraRef = useRef<CameraView>(null);
     const [cameraVisible, setCameraVisible] = useState(true);
     const [plantData, setPlantData] = useState<{ name: string; probability: number, photo: string } | null>(null);
-    const { addPlant } = useContext(PlantDataContext);
+    const { addPlant, getPlants } = useContext(PlantDataContext);
     const [id, setId] = useState(0)
-
+    const {db, user} = useContext(AuthContext);
 
     if (!permission) {
         return <View />;
@@ -142,6 +145,7 @@ const CameraComponent = () => {
     };
 
     const savePlantData = () => {
+        console.log(getPlants().id)
         if (plantData) {
             setId(id + 1);
             addPlant({id, ...plantData})
