@@ -6,7 +6,6 @@ import PlantInfo from "../PlantInfoComponent/PlantInfo";
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import { PLANT_API_KEY } from '@env';
-import { doc, setDoc } from "firebase/firestore";
 
 import {PlantDataContext} from "../../contexts/PlantDataContext/PlantDataContext";
 import {AuthContext} from "../../contexts/AuthContext/AuthContext";
@@ -145,7 +144,6 @@ const CameraComponent = () => {
     };
 
     const savePlantData = () => {
-        console.log(getPlants().id)
         if (plantData) {
             setId(id + 1);
             addPlant({id, ...plantData})

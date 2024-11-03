@@ -10,6 +10,7 @@ import {
 } from '@firebase/auth';
 // import { getReactNativePersistence } from 'firebase/auth/react-native';
 import { getFirestore } from '@firebase/firestore';
+
 import {
     FIREBASE_API_KEY,
     FIREBASE_APP_ID,
@@ -21,6 +22,7 @@ import {
 } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeApp } from '@firebase/app';
+import {doc, setDoc} from "firebase/firestore";
 const firebaseConfig = {
     apiKey: FIREBASE_API_KEY,
     authDomain: FIREBASE_AUTH_DOMAIN,
@@ -30,11 +32,16 @@ const firebaseConfig = {
     appId: FIREBASE_APP_ID,
     measurementId: FIREBASE_MEASUREMENT_ID
 };
+
+
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = initializeAuth(app, {
     persistence: getReactNativePersistence(AsyncStorage)
 });
+
+
 export const AuthContext = createContext();
 
 
@@ -44,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
-    console.log(FIREBASE_API_KEY)
+    //console.log(FIREBASE_API_KEY)
 
     // useEffect(() => {
     //     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -66,7 +73,7 @@ export const AuthProvider = ({ children }) => {
         return () => unsubscribe();
     }, [auth]);
 
-    console.log("USER(null)",user);
+    //console.log("USER(null)",user);
 
     const handleAuthentication = async () => {
 
@@ -81,8 +88,15 @@ export const AuthProvider = ({ children }) => {
                     console.log('User signed in successfully!');
                     //setIsLogin(!isLogin);
                 } else {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                    console.log('User created successfully!');
+                    await createUserWithEmailAndPassword(auth, email.trim(), password)
+                        .then((userCredential) => {
+                            const user = userCredential.user;
+                            setDoc(doc(db, "users", user.uid), {
+                                Email: user.email,
+                                CreatedAt: new Date().toUTCString(),
+                            });
+                        })
+                        .then(() => alert("success"))
                 }
             }
         } catch (error) {
