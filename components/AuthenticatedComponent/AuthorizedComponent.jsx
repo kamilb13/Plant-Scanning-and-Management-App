@@ -2,6 +2,7 @@ import React, {useContext } from 'react';
 import { Box, Text, Button } from 'native-base';
 import {AuthContext} from "../../contexts/AuthContext/AuthContext";
 import {PlantDataContext} from "../../contexts/PlantDataContext/PlantDataContext";
+import {View} from "react-native";
 
 const AuthorizedComponent = ({ navigation }) => {
     const { user } = useContext(AuthContext);
@@ -22,12 +23,14 @@ const AuthorizedComponent = ({ navigation }) => {
             justifyContent="center"
             mx="auto"
         >
-            <Text fontSize="3xl" fontWeight="bold" mb={3}>
-                Welcome
-            </Text>
-            <Text fontSize="lg" fontWeight="medium" color="blue.500" mb={4}>
-                {user.email}
-            </Text>
+            <View style={{flexDirection: "row"}}>
+                <Text fontSize="lg" fontWeight="bold" mb={3} marginRight={1}>
+                    Welcome,
+                </Text>
+                <Text fontSize="lg" fontWeight="bold" color="blue.500" mb={4}>
+                    {user.email}
+                </Text>
+            </View>
             <Text fontSize="md" color="gray.600" mb={4}>
                 You have added {getPlantsCount()} plants to your collection!
             </Text>
@@ -40,9 +43,6 @@ const AuthorizedComponent = ({ navigation }) => {
             >
                 Continue
             </Button>
-            <Text fontSize="sm" textAlign="center" color="gray.500">
-                Thank you for being part of our community! 🌱
-            </Text>
         </Box>
     );
 };

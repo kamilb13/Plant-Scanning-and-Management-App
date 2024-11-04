@@ -10,7 +10,6 @@ const HomeScreen = () => {
                     <Text
                         fontSize="3xl"
                         fontWeight="bold"
-                        color="primary.500"
                         textAlign="center"
                         mb={3}
                         pt={4}

@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from "../../screens/HomeScreen/HomeScreen";
 import MyPlantsScreen from "../../screens/MyPlantsScreen/MyPlantsScreen";
 import AccountScreen from "../../screens/AccountScreen/AccountScreen";
+import { Box, Text, Center } from 'native-base';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,7 +13,7 @@ const tabScreenOptions = {
     tabBarShowLabel: true
 }
 
-const getTabBarIcon = (route, focused) => {
+const getTabBarIcon = (route, focused, color) => {
     let iconName;
 
     switch (route.name) {
@@ -29,7 +30,7 @@ const getTabBarIcon = (route, focused) => {
             iconName = 'home';
     }
 
-    return <Ionicons name={iconName} size={24} color={focused ? 'tomato' : 'gray'} />;
+    return <Ionicons name={iconName} size={24} color={color} />;
 };
 
 const MainTabs = () => {
@@ -37,8 +38,10 @@ const MainTabs = () => {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused }) => getTabBarIcon(route, focused),
-                tabBarActiveTintColor: 'tomato',
+                tabBarIcon: ({ focused, color }) => getTabBarIcon(route, focused, color),
+                tabBarLabel: ({ focused }) => focused ? <Text style={{fontSize: 13}}>{route.name}</Text> : <Text style={{fontSize: 11}}>{route.name}</Text>,
+
+                tabBarActiveTintColor: '#3b82f6',
                 tabBarInactiveTintColor: 'gray',
                 tabBarStyle: { backgroundColor: '#fff' },
             })}

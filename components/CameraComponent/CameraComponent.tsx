@@ -1,15 +1,14 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import {useContext, useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Image } from 'react-native';
 import PlantInfo from "../PlantInfoComponent/PlantInfo";
-import Icon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import { PLANT_API_KEY } from '@env';
-
 import {PlantDataContext} from "../../contexts/PlantDataContext/PlantDataContext";
-import {AuthContext} from "../../contexts/AuthContext/AuthContext";
-import {get} from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import {Ionicons} from "@expo/vector-icons";
+
+
 const CameraComponent = () => {
     const [facing, setFacing] = useState<CameraType>('back');
     const [permission, requestPermission] = useCameraPermissions();
@@ -17,9 +16,8 @@ const CameraComponent = () => {
     const cameraRef = useRef<CameraView>(null);
     const [cameraVisible, setCameraVisible] = useState(true);
     const [plantData, setPlantData] = useState<{ name: string; probability: number, photo: string } | null>(null);
-    const { addPlant, getPlants } = useContext(PlantDataContext);
+    const { addPlant } = useContext(PlantDataContext);
     const [id, setId] = useState(0)
-    const {db, user} = useContext(AuthContext);
 
     if (!permission) {
         return <View />;
@@ -182,13 +180,13 @@ const CameraComponent = () => {
                     <CameraView style={styles.camera} facing={facing} ref={cameraRef}/>
                     <View style={styles.iconContainer}>
                         <TouchableOpacity style={styles.iconButton} onPress={toggleCameraFacing}>
-                            <Icon name="camera-reverse" size={30} color="#ffffff" />
+                            <Ionicons name="camera-reverse" size={30} color="#ffffff" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.iconButton} onPress={takePhoto}>
-                            <Icon name="camera" size={30} color="#ffffff" />
+                            <Ionicons name="camera" size={30} color="#ffffff" />
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.iconButton} onPress={pickImage}>
-                            <Icon name="image" size={30} color="#ffffff" />
+                            <Ionicons name="image" size={30} color="#ffffff" />
                         </TouchableOpacity>
                     </View>
                 </>
@@ -222,7 +220,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-    },
+},
     message: {
         textAlign: 'center',
         paddingBottom: 10,

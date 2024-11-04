@@ -15,7 +15,7 @@ import { PlantDataContext } from "../../contexts/PlantDataContext/PlantDataConte
 import { IconButton, Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Image} from "react-native";
-import Luxometer from "../../components/Luxometer";
+import Luxometer from "../../components/LuxoMeterComponent/Luxometer";
 
 const MyPlantsScreen = () => {
     const { plants, removePlant, updatePlantNote } = useContext(PlantDataContext);

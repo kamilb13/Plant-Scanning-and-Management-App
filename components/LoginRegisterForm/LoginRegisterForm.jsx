@@ -1,13 +1,15 @@
 import React, {useContext} from "react";
-import { Text, Button, Input, Box } from 'native-base';
+import {Text, Button, Input, Box, Center} from 'native-base';
 import {AuthContext} from "../../contexts/AuthContext/AuthContext";
+import {TouchableOpacity} from "react-native";
+import {Ionicons} from "@expo/vector-icons";
 
-const LoginRegisterForm = () => {
+const LoginRegisterForm = ({ navigation }) => {
     const { handleAuthentication } = useContext(AuthContext);
     const { isLogin, setIsLogin } = useContext(AuthContext);
     const { email, setEmail } = useContext(AuthContext);
     const { password, setPassword } = useContext(AuthContext);
-
+    console.log(navigation);
     return (
         <Box width="80%" maxWidth={400} bg="white" p={4} borderRadius="lg" shadow={2}>
             <Text fontSize="2xl" fontWeight="bold" mb={4} textAlign="center">
@@ -21,7 +23,11 @@ const LoginRegisterForm = () => {
                 onChangeText={setEmail}
                 autoCapitalize="none"
                 mb={4}
+                InputLeftElement={
+                    <Ionicons name="mail-outline" size={20} color="#c7c7c7" marginLeft={10}/>
+            }
             />
+
             <Input
                 variant="outline"
                 placeholder="Password"
@@ -29,6 +35,9 @@ const LoginRegisterForm = () => {
                 onChangeText={setPassword}
                 secureTextEntry
                 mb={4}
+                InputLeftElement={
+                    <Ionicons name="lock-closed-outline" size={20} color="#c7c7c7" marginLeft={10}/>
+                }
             />
 
             <Button
@@ -46,6 +55,15 @@ const LoginRegisterForm = () => {
             >
                 {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
             </Text>
+            {isLogin === true ?
+                <>
+                    <Center>
+                        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+                            <Text marginTop={10}>Forgot Password?</Text>
+                        </TouchableOpacity>
+                    </Center>
+                </>
+            : null}
         </Box>
     );
 };

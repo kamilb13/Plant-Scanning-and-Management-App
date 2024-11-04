@@ -1,15 +1,17 @@
 import React, { createContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { initializeApp } from 'firebase/app';
+import {doc, setDoc, getFirestore} from "firebase/firestore";
+
 import {
     createUserWithEmailAndPassword,
-    getAuth, getReactNativePersistence, initializeAuth,
+    getReactNativePersistence, initializeAuth,
     onAuthStateChanged,
     signInWithEmailAndPassword,
     signOut,
-    updateEmail, updatePassword,
+     updatePassword,
     EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification
-} from '@firebase/auth';
-// import { getReactNativePersistence } from 'firebase/auth/react-native';
-import { getFirestore } from '@firebase/firestore';
+} from 'firebase/auth';
 
 import {
     FIREBASE_API_KEY,
@@ -20,9 +22,7 @@ import {
     FIREBASE_PROJECT_ID,
     FIREBASE_STORAGE_BUCKET
 } from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { initializeApp } from '@firebase/app';
-import {doc, setDoc} from "firebase/firestore";
+
 const firebaseConfig = {
     apiKey: FIREBASE_API_KEY,
     authDomain: FIREBASE_AUTH_DOMAIN,
@@ -32,8 +32,6 @@ const firebaseConfig = {
     appId: FIREBASE_APP_ID,
     measurementId: FIREBASE_MEASUREMENT_ID
 };
-
-
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -51,19 +49,6 @@ export const AuthProvider = ({ children }) => {
     const [password, setPassword] = useState('');
     const [user, setUser] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
-    //console.log(FIREBASE_API_KEY)
-
-    // useEffect(() => {
-    //     const unsubscribe = onAuthStateChanged(auth, (user) => {
-    //         if (user) {
-    //             setUser(user);
-    //         } else {
-    //             setUser(null);
-    //         }
-    //     });
-    //
-    //     return () => unsubscribe();
-    // }, []);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -72,8 +57,6 @@ export const AuthProvider = ({ children }) => {
 
         return () => unsubscribe();
     }, [auth]);
-
-    //console.log("USER(null)",user);
 
     const handleAuthentication = async () => {
 
@@ -86,7 +69,6 @@ export const AuthProvider = ({ children }) => {
                 if (isLogin) {
                     await signInWithEmailAndPassword(auth, email, password);
                     console.log('User signed in successfully!');
-                    //setIsLogin(!isLogin);
                 } else {
                     await createUserWithEmailAndPassword(auth, email.trim(), password)
                         .then((userCredential) => {
@@ -96,7 +78,7 @@ export const AuthProvider = ({ children }) => {
                                 CreatedAt: new Date().toUTCString(),
                             });
                         })
-                        .then(() => alert("success"))
+                        .then(() => console.log("User added to db"))
                 }
             }
         } catch (error) {
@@ -131,7 +113,6 @@ export const AuthProvider = ({ children }) => {
             return true;
         } catch (error) {
             setErrorMessageForUpdate('Re-authentication failed: ' + error.message);
-            console.log(error);
             return false;
         }
     };
