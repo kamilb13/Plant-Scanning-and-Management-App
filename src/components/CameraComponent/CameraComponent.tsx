@@ -5,7 +5,7 @@ import { Image } from 'react-native';
 import PlantInfo from "../PlantInfoComponent/PlantInfo";
 import * as ImagePicker from 'expo-image-picker';
 import { PLANT_API_KEY } from '@env';
-import {PlantDataContext} from "../../contexts/PlantDataContext/PlantDataContext";
+import {PlantDataContext} from "../../context/PlantDataContext/PlantDataContext";
 import {Ionicons} from "@expo/vector-icons";
 
 
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     iconButton: {
         marginHorizontal: 10,
         padding: 10,
-        backgroundColor: '#333',
+        backgroundColor: '#5c5c5c',
         borderRadius: 30,
     },
     button: {

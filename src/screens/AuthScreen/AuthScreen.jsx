@@ -1,8 +1,8 @@
 import React, {useContext } from 'react';
 import { Box, Text, Center } from 'native-base';
 import AuthorizedComponent from "../../components/AuthenticatedComponent/AuthorizedComponent";
-import LoginRegisterForm from "../../components/LoginRegisterForm/LoginRegisterForm";
-import {AuthContext} from "../../contexts/AuthContext/AuthContext";
+import LoginRegisterForm from "../LoginRegisterFormScreen/LoginRegisterForm";
+import {AuthContext} from "../../context/AuthContext/AuthContext";
 
 function AuthScreen({ navigation }) {
     const { user, errorMessage } = useContext(AuthContext);

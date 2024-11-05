@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import { LightSensor } from 'expo-sensors';
 import { Text, Box } from 'native-base';
@@ -7,9 +7,11 @@ import { Ionicons } from '@expo/vector-icons';
 const Luxometer = ({luxRange}) => {
     const [{ illuminance }, setData] = useState({ illuminance: 0 });
     const [subscription, setSubscription] = useState(null);
+    const [minValue, setMinValue] = useState(0);
+    const [maxValue, setMaxValue] = useState(0);
 
-    const [minValue, maxValue] = luxRange.split('-').map(Number);
-    console.log(minValue + " " +maxValue)
+
+
     const toggle = () => {
         if (subscription) {
             unsubscribe();
@@ -31,10 +33,15 @@ const Luxometer = ({luxRange}) => {
         setSubscription(null);
     };
 
-    // useEffect(() => {
-    //     //subscribe();
-    //     return () => unsubscribe();
-    // }, []);
+    useEffect(() => {
+        //subscribe();
+        //return () => unsubscribe();
+        if (luxRange && typeof luxRange === 'string') {
+            const [minValue, maxValue] = luxRange.split('-').map(Number);
+            setMinValue(minValue);
+            setMaxValue(maxValue);
+        }
+    }, []);
 
     return (
         <Box

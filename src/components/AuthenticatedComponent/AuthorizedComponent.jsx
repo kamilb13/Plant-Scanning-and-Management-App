@@ -1,7 +1,7 @@
 import React, {useContext } from 'react';
 import { Box, Text, Button } from 'native-base';
-import {AuthContext} from "../../contexts/AuthContext/AuthContext";
-import {PlantDataContext} from "../../contexts/PlantDataContext/PlantDataContext";
+import {AuthContext} from "../../context/AuthContext/AuthContext";
+import {PlantDataContext} from "../../context/PlantDataContext/PlantDataContext";
 import {View} from "react-native";
 
 const AuthorizedComponent = ({ navigation }) => {
@@ -24,7 +24,7 @@ const AuthorizedComponent = ({ navigation }) => {
             mx="auto"
         >
             <View style={{flexDirection: "row"}}>
-                <Text fontSize="lg" fontWeight="bold" mb={3} marginRight={1}>
+                <Text color="#000" fontSize="lg" fontWeight="bold" mb={3} marginRight={1}>
                     Welcome,
                 </Text>
                 <Text fontSize="lg" fontWeight="bold" color="blue.500" mb={4}>

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Box, VStack, Input, Icon, Button, Text, Center, ScrollView } from "native-base";
 import { Feather } from "@expo/vector-icons";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { AuthContext } from "../../contexts/AuthContext/AuthContext";
+import { AuthContext } from "../../context/AuthContext/AuthContext";
 
 const ForgotPassword = ({ navigation }) => {
     const [email, setEmail] = useState("");
@@ -42,6 +42,7 @@ const ForgotPassword = ({ navigation }) => {
                         </Text>
 
                         <Input
+                            color="#000"
                             placeholder="Enter email address here"
                             value={email}
                             onChangeText={setEmail}

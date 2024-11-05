@@ -1,20 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AuthScreen from './screens/AuthScreen/AuthScreen';
-import MainTabs from './components/BottomNavigation/MainTabs';
-import LoginRegisterForm from "./components/LoginRegisterForm/LoginRegisterForm";
-import { AuthProvider } from './contexts/AuthContext/AuthContext';
-import {PlantDataProvider} from "./contexts/PlantDataContext/PlantDataContext";
+import React, {useEffect} from 'react';
+import { AuthProvider } from './src/context/AuthContext/AuthContext';
+import {PlantDataProvider} from "./src/context/PlantDataContext/PlantDataContext";
+import StackNav from "./src/navigation/StackNav";
 import {LogBox} from "react-native";
-import ForgotPassword from "./components/ForgotPasswordComponent/ForgotPassword";
-import {NativeBaseProvider} from "native-base";
-
-const Stack = createNativeStackNavigator();
-
-const screenOptions = {
-    headerShown: false
-}
+import { NativeBaseProvider } from "native-base";
 
 export default function App() {
     useEffect(() => {
@@ -25,16 +14,9 @@ export default function App() {
   return (
     <AuthProvider>
       <PlantDataProvider>
-          <NavigationContainer>
-              <NativeBaseProvider>
-                <Stack.Navigator initialRouteName="Auth">
-                  <Stack.Screen name="Auth" component={AuthScreen} options={screenOptions}/>
-                  <Stack.Screen name="Main" component={MainTabs} options={screenOptions}/>
-                  <Stack.Screen name="LoginRegister" component={LoginRegisterForm} options={screenOptions}/>
-                  <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={screenOptions}/>
-                </Stack.Navigator>
-              </NativeBaseProvider>
-          </NavigationContainer>
+          <NativeBaseProvider>
+            <StackNav/>
+          </NativeBaseProvider>
       </PlantDataProvider>
     </AuthProvider>
   );

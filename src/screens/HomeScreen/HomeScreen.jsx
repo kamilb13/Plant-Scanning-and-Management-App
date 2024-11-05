@@ -1,13 +1,20 @@
 import React from 'react';
-import { NativeBaseProvider, Box, Text, Button, Center } from 'native-base';
+import {NativeBaseProvider, Box, Text, Button, Center, useColorMode} from 'native-base';
 import CameraComponent from "../../components/CameraComponent/CameraComponent";
+import {getColors} from "../../theme/theme";
 
 const HomeScreen = () => {
+    const { colorMode } = useColorMode();
+    const colors = getColors(colorMode);
+    const backgroundColor = colors.background;
+    const textColor = colors.text;
+
     return (
         <NativeBaseProvider>
-            <Center flex={1} px={4}>
+            <Center flex={1} px={4} backgroundColor={backgroundColor}>
                 <Box alignItems="center" >
                     <Text
+                        color={textColor}
                         fontSize="3xl"
                         fontWeight="bold"
                         textAlign="center"
