@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     NativeBaseProvider,
     Button,
@@ -16,6 +16,8 @@ import { AuthContext } from "../../context/AuthContext/AuthContext";
 import { Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import {getColors} from "../../theme/theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const AccountScreen = ({ navigation }) => {
     const { user, handleAuthentication, handleUpdatePassword } = useContext(AuthContext);
@@ -31,10 +33,13 @@ const AccountScreen = ({ navigation }) => {
     const backgroundBox = colors.backgroundBox;
     const textColor = colors.text;
     const iconColor = colors.icon;
+    const {handleToggleColorMode} = useContext(ThemeContext);
 
     console.log("Background Color:", backgroundColor);
     console.log("Text Color:", textColor);
     console.log("Icon Color:", iconColor);
+
+
 
     const handleLogout = () => {
         Alert.alert(
@@ -66,6 +71,7 @@ const AccountScreen = ({ navigation }) => {
             console.log("Error updating password:", error);
         }
     };
+
 
 
     return (
@@ -126,7 +132,7 @@ const AccountScreen = ({ navigation }) => {
                 </AlertDialog>
                 <IconButton
                     icon={<Ionicons name={colorMode === "light" ? "sunny" : "moon"} size={24} color="gray" />}
-                    onPress={toggleColorMode}
+                    onPress={handleToggleColorMode}
                     borderRadius="full"
                     bg="gray.200"
                     _pressed={{

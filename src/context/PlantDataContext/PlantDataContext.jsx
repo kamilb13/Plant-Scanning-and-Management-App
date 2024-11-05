@@ -1,5 +1,4 @@
 import React, {createContext, useState, useEffect, useContext} from 'react';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {AuthContext} from "../AuthContext/AuthContext";
 import { doc, updateDoc, arrayUnion, getDoc, arrayRemove  } from "firebase/firestore";
 export const PlantDataContext = createContext();
@@ -11,11 +10,11 @@ export const PlantDataProvider = ({ children }) => {
     const addPlant = async (newPlant) => {
         try {
             const userDocRef = doc(db, "users", user.uid);
-            const userDoc = await getDoc(userDocRef); // Sprawdź, czy dokument istnieje
+            const userDoc = await getDoc(userDocRef);
 
             if (!userDoc.exists()) {
-                console.error("Dokument użytkownika nie istnieje!");
-                return; // Zakończ, jeśli dokument nie istnieje
+                console.error("Dokument uzytkownika nie istnieje!");
+                return;
             }
             await updateDoc(userDocRef, {
                 plants: arrayUnion({
@@ -37,10 +36,9 @@ export const PlantDataProvider = ({ children }) => {
         try {
             const updatedPlants = plants.filter(plant => plant.id !== id);
 
-            // Usunięcie rośliny z Firestore
             const userDocRef = doc(db, "users", user.uid);
             await updateDoc(userDocRef, {
-                plants: arrayRemove({ id }) // Upewnij się, że id jest jedynym kluczem, aby usunięcie działało
+                plants: arrayRemove({ id })
             });
 
             setPlants(updatedPlants);
@@ -56,10 +54,9 @@ export const PlantDataProvider = ({ children }) => {
                 plant.id === id ? { ...plant, note } : plant
             );
 
-            // Zaktualizowanie rośliny w Firestore
             const userDocRef = doc(db, "users", user.uid);
             await updateDoc(userDocRef, {
-                plants: updatedPlants // Zaktualizuj całą tablicę roślin lub użyj arrayUnion dla pojedynczego elementu
+                plants: updatedPlants
             });
 
             setPlants(updatedPlants);

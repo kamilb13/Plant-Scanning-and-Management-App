@@ -10,29 +10,27 @@ const HomeScreen = () => {
     const textColor = colors.text;
 
     return (
-        <NativeBaseProvider>
-            <Center flex={1} px={4} backgroundColor={backgroundColor}>
-                <Box alignItems="center" >
-                    <Text
-                        color={textColor}
-                        fontSize="3xl"
-                        fontWeight="bold"
-                        textAlign="center"
-                        mb={3}
-                        pt={4}
-                        textShadow={{
-                            color: 'gray.600',
-                            offset: { width: 1, height: 1 },
-                            radius: 2,
-                            opacity: 0.7,
-                        }}
-                    >
-                        Take a photo of plant!
-                    </Text>
-                    <CameraComponent />
-                </Box>
-            </Center>
-        </NativeBaseProvider>
+        <Center flex={1} px={4} backgroundColor={backgroundColor}>
+            <Box alignItems="center" >
+                <Text
+                    color={textColor}
+                    fontSize="3xl"
+                    fontWeight="bold"
+                    textAlign="center"
+                    mb={3}
+                    pt={4}
+                    textShadow={{
+                        color: 'gray.600',
+                        offset: { width: 1, height: 1 },
+                        radius: 2,
+                        opacity: 0.7,
+                    }}
+                >
+                    Take a photo of plant!
+                </Text>
+                <CameraComponent />
+            </Box>
+        </Center>
     );
 };
 

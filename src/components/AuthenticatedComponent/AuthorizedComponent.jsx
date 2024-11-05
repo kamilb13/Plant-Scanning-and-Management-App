@@ -1,12 +1,18 @@
 import React, {useContext } from 'react';
-import { Box, Text, Button } from 'native-base';
+import {Box, Text, Button, useColorMode} from 'native-base';
 import {AuthContext} from "../../context/AuthContext/AuthContext";
 import {PlantDataContext} from "../../context/PlantDataContext/PlantDataContext";
 import {View} from "react-native";
+import {getColors} from "../../theme/theme";
 
 const AuthorizedComponent = ({ navigation }) => {
     const { user } = useContext(AuthContext);
     const { getPlantsCount } = useContext(PlantDataContext);
+
+    const { colorMode } = useColorMode();
+    const colors = getColors(colorMode);
+    const backgroundColor = colors.background;
+    const textColor = colors.text;
 
     if (!user) {
         return <Text>No user data available!</Text>;
@@ -15,7 +21,7 @@ const AuthorizedComponent = ({ navigation }) => {
     return (
         <Box
             p={6}
-            bg="white"
+            bg={backgroundColor}
             borderRadius="lg"
             shadow={2}
             width="90%"
@@ -24,14 +30,14 @@ const AuthorizedComponent = ({ navigation }) => {
             mx="auto"
         >
             <View style={{flexDirection: "row"}}>
-                <Text color="#000" fontSize="lg" fontWeight="bold" mb={3} marginRight={1}>
+                <Text color={textColor} fontSize="lg" fontWeight="bold" mb={3} marginRight={1}>
                     Welcome,
                 </Text>
-                <Text fontSize="lg" fontWeight="bold" color="blue.500" mb={4}>
+                <Text fontSize="lg" fontWeight="bold" color="blue.400" mb={4}>
                     {user.email}
                 </Text>
             </View>
-            <Text fontSize="md" color="gray.600" mb={4}>
+            <Text fontSize="md" color={textColor} mb={4}>
                 You have added {getPlantsCount()} plants to your collection!
             </Text>
             <Button

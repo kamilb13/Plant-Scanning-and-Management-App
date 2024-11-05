@@ -12,6 +12,7 @@ const Tab = createBottomTabNavigator();
 const tabScreenOptions = {
     headerShown: true,
     tabBarShowLabel: true
+
 }
 
 const getTabBarIcon = (route, focused, color) => {
@@ -53,6 +54,7 @@ const BottomTabNav = () => {
             screenOptions={({ route }) => ({
                 headerStyle: {
                     backgroundColor: headerColor,
+                     height: 80,
                 },
                 headerTintColor: headerColorText,
 

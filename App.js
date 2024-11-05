@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
-import { AuthProvider } from './src/context/AuthContext/AuthContext';
-import {PlantDataProvider} from "./src/context/PlantDataContext/PlantDataContext";
 import StackNav from "./src/navigation/StackNav";
 import {LogBox} from "react-native";
 import { NativeBaseProvider } from "native-base";
+import { ThemeProvider } from "./src/context/ThemeContext/ThemeContext";
+import { AuthProvider } from './src/context/AuthContext/AuthContext';
+import { PlantDataProvider } from "./src/context/PlantDataContext/PlantDataContext";
 
 export default function App() {
     useEffect(() => {
@@ -11,13 +12,15 @@ export default function App() {
 
     }, []);
 
-  return (
-    <AuthProvider>
-      <PlantDataProvider>
-          <NativeBaseProvider>
-            <StackNav/>
-          </NativeBaseProvider>
-      </PlantDataProvider>
-    </AuthProvider>
-  );
+    return (
+        <NativeBaseProvider>
+            <AuthProvider>
+                <PlantDataProvider>
+                    <ThemeProvider>
+                        <StackNav/>
+                    </ThemeProvider>
+                </PlantDataProvider>
+            </AuthProvider>
+        </NativeBaseProvider>
+    );
 }
