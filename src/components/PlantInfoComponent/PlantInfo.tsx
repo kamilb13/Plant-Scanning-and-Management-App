@@ -21,7 +21,7 @@ const PlantInfo: React.FC<PlantInfoProps> = ({ plantName, probability, onRetake 
             {/*<Text color={textColor}>Plant recognized:</Text>*/}
             <Text color={textColor} fontSize={22} mt={4}>{plantName}</Text>
             <Text color="gray.400" mt={4}>Probability: {(probability * 100).toFixed(2)}%</Text>
-            <Button onPress={onRetake} mt={4}>Take photo again</Button>
+            <Button onPress={onRetake} mt={4} bg="green.500">Take photo again</Button>
         </Center>
     );
 };

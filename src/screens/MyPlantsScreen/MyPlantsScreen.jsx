@@ -29,6 +29,7 @@ const MyPlantsScreen = () => {
     const backgroundBox = colors.backgroundBox;
     const textColor = colors.text;
 
+    const tabBarActiveTintColor = colors.tabBarActiveTintColor;
     useEffect(() => {
         const fetchCareInstructions = async () => {
             try {
@@ -95,12 +96,19 @@ const MyPlantsScreen = () => {
                         value={item.note}
                         onChangeText={(text) => updatePlantNote(item.id, text)}
                         h={10}
+                        placeholderTextColor={textColor}
+                        backgroundColor={backgroundBox}
+                        _focus={{
+                            borderColor: tabBarActiveTintColor,
+                            bg: "gray.100",
+                            color: textColor
+                        }}
                     />
                 </Box>;
             }}
         </Pressable>;
     }
-
+//console.log(plants)
     return (
         <Center flex={1} px={4} backgroundColor={backgroundColor}>
             {selectedPlant ? (
@@ -114,10 +122,10 @@ const MyPlantsScreen = () => {
                     <Text fontSize="xl" fontWeight="bold" textAlign="center">
                         {selectedPlant.name}
                     </Text>
-                    <VStack space={2} alignItems="center" padding={4}>
+                    <VStack space={1} alignItems="center" padding={3}>
                         {careInstructions[selectedPlant.name] ? (
                             careInstructions[selectedPlant.name].map((instruction, index) => (
-                                <Text key={index} fontSize="md" textAlign="center">
+                                <Text key={index} fontSize="sm" textAlign="center">
                                     - {instruction}
                                 </Text>
                             ))
@@ -139,12 +147,12 @@ const MyPlantsScreen = () => {
                             borderColor="blue.400"
                             alignItems="center"
                         >
-                            <Text>
+                            <Text color="gray.700">
                                 Light intensity: {lightIntensity[selectedPlant.name] ? (lightIntensity[selectedPlant.name] + " lx") : (<Text>Brak dancyh</Text>)}
                             </Text>
                         </Center>
 
-                            <Luxometer luxRange={lightIntensity[selectedPlant.name]}/>
+                        <Luxometer luxRange={lightIntensity[selectedPlant.name]}/>
 
                     </HStack>
                     <Button

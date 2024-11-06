@@ -13,6 +13,7 @@ const AuthorizedComponent = ({ navigation }) => {
     const colors = getColors(colorMode);
     const backgroundColor = colors.background;
     const textColor = colors.text;
+    const tabBarActiveTintColor = colors.tabBarActiveTintColor;
 
     if (!user) {
         return <Text>No user data available!</Text>;
@@ -30,10 +31,10 @@ const AuthorizedComponent = ({ navigation }) => {
             mx="auto"
         >
             <View style={{flexDirection: "row"}}>
-                <Text color={textColor} fontSize="lg" fontWeight="bold" mb={3} marginRight={1}>
-                    Welcome,
-                </Text>
-                <Text fontSize="lg" fontWeight="bold" color="blue.400" mb={4}>
+                {/*<Text color={textColor} fontSize="lg" fontWeight="bold" mb={3} marginRight={1}>*/}
+                {/*    Hi!*/}
+                {/*</Text>*/}
+                <Text fontSize="lg" fontWeight="bold" color="green.300" mb={4}>
                     {user.email}
                 </Text>
             </View>
@@ -42,7 +43,7 @@ const AuthorizedComponent = ({ navigation }) => {
             </Text>
             <Button
                 onPress={() => navigation.navigate('Main')}
-                colorScheme="blue"
+                bg={tabBarActiveTintColor}
                 size="lg"
                 width="100%"
                 mb={3}

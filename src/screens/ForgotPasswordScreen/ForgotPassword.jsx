@@ -1,12 +1,18 @@
 import React, { useContext, useState } from "react";
-import { Box, VStack, Input, Icon, Button, Text, Center, ScrollView } from "native-base";
+import {Box, VStack, Input, Icon, Button, Text, Center, ScrollView, useColorMode} from "native-base";
 import { Feather } from "@expo/vector-icons";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
+import {getColors} from "../../theme/theme";
 
 const ForgotPassword = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const { auth } = useContext(AuthContext);
+    const { colorMode } = useColorMode();
+    const colors = getColors(colorMode);
+    const backgroundColor = colors.background;
+    const backgroundBox = colors.backgroundBox;
+    const textColor = colors.text;
 
     const handlePassword = async () => {
         try {
@@ -22,7 +28,7 @@ const ForgotPassword = ({ navigation }) => {
     };
 
     return (
-        <ScrollView flex={1} bg="blue.50">
+        <ScrollView flex={1} bg="blue.50" backgroundColor={backgroundBox}>
             <Center flex={1} px={5} py="25%">
                 <Box
                     bg="white"
@@ -31,6 +37,7 @@ const ForgotPassword = ({ navigation }) => {
                     shadow={6}
                     width="100%"
                     maxWidth="400px"
+                    backgroundColor={backgroundColor}
                 >
                     <VStack space={4}>
                         <Text fontSize="2xl" fontWeight="bold" color="blue.700" textAlign="center">
@@ -50,10 +57,17 @@ const ForgotPassword = ({ navigation }) => {
                             InputLeftElement={
                                 <Icon as={<Feather name="mail" />} size={5} ml={3} color="gray.400" />
                             }
+
                             fontSize="md"
                             bg="gray.100"
                             borderRadius="md"
-                            _focus={{ borderColor: "blue.500" }}
+                            placeholderTextColor={textColor}
+                            backgroundColor={backgroundBox}
+                            _focus={{
+                                borderColor: "#3b82f6",
+                                bg: "gray.100",
+                                color: textColor
+                            }}
                         />
 
                         <Button

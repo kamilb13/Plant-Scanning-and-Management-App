@@ -16,6 +16,7 @@ const LoginRegisterForm = ({ navigation }) => {
     const backgroundColor = colors.background;
     const backgroundBox = colors.backgroundBox;
     const textColor = colors.text;
+    const tabBarActiveTintColor = colors.tabBarActiveTintColor;
 
     return (
         <Box width="80%" maxWidth={400} bg="white" p={4} borderRadius="lg" shadow={2} backgroundColor={backgroundColor}>
@@ -27,14 +28,14 @@ const LoginRegisterForm = ({ navigation }) => {
                 color={textColor}
                 variant="outline"
                 placeholder="Email"
-                placeholderTextColor={textColor}
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
-                backgroundColor={backgroundBox}
                 mb={4}
+                placeholderTextColor={textColor}
+                backgroundColor={backgroundBox}
                 _focus={{
-                    borderColor: "#3b82f6",
+                    borderColor: tabBarActiveTintColor,
                     bg: "gray.100",
                     color: textColor
                 }}
@@ -54,7 +55,7 @@ const LoginRegisterForm = ({ navigation }) => {
                 mb={4}
                 backgroundColor={backgroundBox}
                 _focus={{
-                    borderColor: "#3b82f6",
+                    borderColor: tabBarActiveTintColor,
                     bg: "gray.100",
                     color: textColor
                 }}
@@ -65,14 +66,14 @@ const LoginRegisterForm = ({ navigation }) => {
 
             <Button
                 onPress={handleAuthentication}
-                colorScheme="blue"
+                bg={tabBarActiveTintColor}
                 mb={4}
             >
                 {isLogin ? 'Sign In' : 'Sign Up'}
             </Button>
 
             <Text
-                color="blue.500"
+                color="green.300"
                 textAlign="center"
                 onPress={() => setIsLogin(!isLogin)}
             >

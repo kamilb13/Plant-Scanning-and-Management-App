@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
     NativeBaseProvider,
     Button,
@@ -11,12 +11,11 @@ import {
     useColorMode,
     useColorModeValue, IconButton
 } from 'native-base';
-
+import { Animated } from 'react-native';
 import { AuthContext } from "../../context/AuthContext/AuthContext";
 import { Alert } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import {getColors} from "../../theme/theme";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ThemeContext } from "../../context/ThemeContext/ThemeContext";
 
 const AccountScreen = ({ navigation }) => {
@@ -33,12 +32,14 @@ const AccountScreen = ({ navigation }) => {
     const backgroundBox = colors.backgroundBox;
     const textColor = colors.text;
     const iconColor = colors.icon;
+    const tabBarActiveTintColor = colors.tabBarActiveTintColor;
     const {handleToggleColorMode} = useContext(ThemeContext);
 
     console.log("Background Color:", backgroundColor);
     console.log("Text Color:", textColor);
     console.log("Icon Color:", iconColor);
 
+    const animationHeight = useRef(new Animated.Value(0)).current;
 
 
     const handleLogout = () => {
@@ -60,27 +61,36 @@ const AccountScreen = ({ navigation }) => {
 
 
     const updatePassword = async () => {
-        try {
-            await handleUpdatePassword(newPassword, currentPassword, setShowSuccess, setErrorMessageForUpdate);
-            handleAuthentication();
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'Auth' }],
-            });
-        } catch (error) {
-            console.log("Error updating password:", error);
+        if((currentPassword.length > 5 && newPassword.length > 5) && newPassword === currentPassword){
+            try {
+                await handleUpdatePassword(newPassword, currentPassword, setShowSuccess, setErrorMessageForUpdate);
+                handleAuthentication();
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Auth' }],
+                });
+            } catch (error) {
+                console.log("Error updating password:", error);
+            }
         }
     };
 
-
+    useEffect(() => {
+        Animated.timing(animationHeight, {
+            toValue: changePassword ? 200 : 0,
+            duration: 300,
+            useNativeDriver: false
+        }).start();
+    }, [changePassword]);
 
     return (
         <Center flex={1} px={4} bg={backgroundColor}>
             <VStack space={4} alignItems="center" mb={6} p={5} bg={backgroundBox} borderRadius="xl" shadow={2}>
                 <Ionicons color={iconColor} name="person-circle-outline" size={60}/>
                 <Text fontSize="2xl" fontWeight="bold" color={textColor}>
-                    Hello, {user?.email || "User"}
+                    Hello
                 </Text>
+                <Text fontSize="xl" fontWeight="bold" color={textColor}>{user?.email || "User"}</Text>
                 <Text
                     fontSize="sm"
                     color={textColor}
@@ -89,38 +99,54 @@ const AccountScreen = ({ navigation }) => {
                 >
                     {changePassword ? "Cancel Edit Password" : "Edit Password"}
                 </Text>
-                {changePassword && (
-                    <>
-                        <Input
-                            placeholder="Current Password"
-                            value={currentPassword}
-                            onChangeText={setCurrentPassword}
-                            type="password"
-                            width="80%"
-                            bg="gray.100"
-                            borderRadius="lg"
-                            mt={2}
-                        />
-                        <Input
-                            placeholder="New Password"
-                            value={newPassword}
-                            onChangeText={setNewPassword}
-                            type="password"
-                            width="80%"
-                            bg="gray.100"
-                            borderRadius="lg"
-                            mt={2}
-                        />
-                        <Button colorScheme="blue" onPress={updatePassword} shadow={1}>
-                            Update Password
-                        </Button>
-                    </>
-                )}
-                {errorMessageForUpdate && (
-                    <Text color="red.500" mt={2}>
-                        {errorMessageForUpdate}
-                    </Text>
-                )}
+                <Animated.View style={{ height: animationHeight, overflow: 'hidden' }}>
+                    {changePassword && (
+                        <VStack space={3} alignItems="center" padding={3} width={280}>
+                            <Input
+                                placeholder="Current Password"
+                                value={currentPassword}
+                                onChangeText={setCurrentPassword}
+                                type="password"
+                                width="80%"
+                                bg="gray.100"
+                                borderRadius="lg"
+                                mt={2}
+                                placeholderTextColor={textColor}
+                                backgroundColor={backgroundBox}
+                                _focus={{
+                                    borderColor: "#3b82f6",
+                                    bg: "gray.100",
+                                    color: textColor
+                                }}
+                            />
+                            <Input
+                                placeholder="New Password"
+                                value={newPassword}
+                                onChangeText={setNewPassword}
+                                type="password"
+                                width="80%"
+                                bg="gray.100"
+                                borderRadius="lg"
+                                mt={2}
+                                placeholderTextColor={textColor}
+                                backgroundColor={backgroundBox}
+                                _focus={{
+                                    borderColor: "#3b82f6",
+                                    bg: "gray.100",
+                                    color: textColor
+                                }}
+                            />
+                            <Button bg={tabBarActiveTintColor} onPress={updatePassword} shadow={1}>
+                                Update Password
+                            </Button>
+                        </VStack>
+                    )}
+                    {errorMessageForUpdate && (
+                        <Text color="red.500" mt={2}>
+                            {errorMessageForUpdate}
+                        </Text>
+                    )}
+                </Animated.View>
                 <AlertDialog isOpen={showSuccess} onClose={() => setShowSuccess(false)}>
                     <AlertDialog.Content>
                         <AlertDialog.Header>Success</AlertDialog.Header>
