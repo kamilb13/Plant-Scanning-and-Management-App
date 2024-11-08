@@ -17,9 +17,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Image} from "react-native";
 import Luxometer from "../../components/LuxoMeterComponent/Luxometer";
 import {getColors} from "../../theme/theme";
+import {AuthContext} from "../../context/AuthContext/AuthContext";
 
 const MyPlantsScreen = () => {
-    const { plants, removePlant, updatePlantNote } = useContext(PlantDataContext);
+    const { plants, removePlant, updatePlantNote, fetchUserPlantsNotes } = useContext(PlantDataContext);
     const [selectedPlant, setSelectedPlant] = useState(null);
     const [careInstructions, setCareInstructions] = useState({});
     const [lightIntensity, setLightIntensity] = useState({});
@@ -28,8 +29,49 @@ const MyPlantsScreen = () => {
     const backgroundColor = colors.background;
     const backgroundBox = colors.backgroundBox;
     const textColor = colors.text;
+    const [notes, setNotes] = useState({});
+    const { db, user } = useContext(AuthContext);
+    const [plantsNotes, setPlantsNotes] = useState([]);
 
     const tabBarActiveTintColor = colors.tabBarActiveTintColor;
+
+    // useEffect(() => {
+    //     //console.log("NOTATKI ", JSON.stringify(notes, null, 2));
+    //     //console.log("PLANTS", JSON.stringify(plants, null, 2));
+    //     setPlantsNotes(plants);
+    // }, [notes]); // czemu tu jest [notes] ?!
+
+    // useEffect(() => {
+    //     console.log("plantsNotes ", JSON.stringify(plantsNotes, null, 2));
+    // }, []);
+
+    useEffect(() => {
+        setPlantsNotes(plants.map(plant => ({
+            note: plant.note || ""
+        })));
+    }, [notes, plants]);
+
+    const handleNoteChange = (id, text) => {
+
+        setPlantsNotes(prevPlantNotes => ({
+            ...prevPlantNotes,
+            [id]: text
+        }));
+        console.log(notes)
+    };
+
+    useEffect(() => {
+        console.log("plantsNotes ", JSON.stringify(plantsNotes, null, 2));
+    })
+
+    const updatePlantNoteLocally = (id, newNote) => {
+        setNotes(prevNotes => ({
+            ...prevNotes,
+            [id]: newNote
+        }));
+        updatePlantNote(id, newNote);
+    };
+
     useEffect(() => {
         const fetchCareInstructions = async () => {
             try {
@@ -66,47 +108,63 @@ const MyPlantsScreen = () => {
     }, []);
 
     const plantItem = ({item, index}) => {
-        return <Pressable padding={2} onPress={()=> {setSelectedPlant(item)}} >
-            {({
-                  isHovered,
-                  isFocused,
-                  isPressed
-              }) => {
-                return <Box maxW="96" shadow="3" bg={isPressed ? 'coolGray.200' : isHovered ? 'coolGray.200' : 'coolGray.100'} p="5" rounded="8" style={{
-                    backgroundColor: backgroundBox,
-                    transform: [{
-                        scale: isPressed ? 0.96 : 1
-                    }]
-                }}>
-                    <HStack alignItems="center" >
-                        <Text color={textColor} fontSize="xl" fontWeight="medium" >{index + 1}. {item.name}</Text>
-                        {/*<Spacer />*/}
-                        <IconButton
-                            icon={<Icon as={Ionicons} name="trash" size="7"  color="red.500" />}
-                            onPress={() => removePlant(item.id)}
-                            variant="ghost"
-                            ml={1}
-                        />
-                    </HStack>
-                    <Text color="coolGray.400" fontWeight="light" fontSize={13} mb={2}>
-                        Item probability: {(item.probability*100)}%
-                    </Text>
-                    <TextArea
-                        placeholder="Add a note..."
-                        value={item.note}
-                        onChangeText={(text) => updatePlantNote(item.id, text)}
-                        h={10}
-                        placeholderTextColor={textColor}
-                        backgroundColor={backgroundBox}
-                        _focus={{
-                            borderColor: tabBarActiveTintColor,
-                            bg: "gray.100",
-                            color: textColor
-                        }}
-                    />
-                </Box>;
-            }}
-        </Pressable>;
+
+        return (
+            <Pressable padding={2} onPress={() => { setSelectedPlant(item) }}>
+                {({ isHovered, isFocused, isPressed }) => {
+                    return (
+                        <Box
+                            maxW="96"
+                            shadow="3"
+                            bg={isPressed ? 'coolGray.200' : isHovered ? 'coolGray.200' : 'coolGray.100'}
+                            p="5"
+                            rounded="8"
+                            style={{
+                                backgroundColor: backgroundBox,
+                                transform: [{ scale: isPressed ? 0.96 : 1 }]
+                            }}
+                        >
+                            <HStack alignItems="center">
+                                <Text color={textColor} fontSize="xl" fontWeight="medium">
+                                    {index + 1}. {item.name}
+                                </Text>
+                                <IconButton
+                                    icon={<Icon as={Ionicons} name="trash" size="7" color="red.500" />}
+                                    onPress={() => removePlant(item.id)}
+                                    variant="ghost"
+                                    ml={1}
+                                />
+                            </HStack>
+                            <Text color="coolGray.400" fontWeight="light" fontSize={13} mb={2}>
+                                Item probability: {(item.probability * 100)}%
+                            </Text>
+                            <HStack alignItems="center" space={2}>
+                                <TextArea
+                                    placeholder="Add a note..."
+                                    value={plantsNotes[item.id]?.note}
+                                    onChangeText={(text) => handleNoteChange(item.id, text)}
+                                    h={10}
+                                    flex={1}
+                                    placeholderTextColor={textColor}
+                                    backgroundColor={backgroundBox}
+                                    _focus={{
+                                        borderColor: tabBarActiveTintColor,
+                                        bg: "gray.100",
+                                        color: textColor
+                                    }}
+                                />
+                                <IconButton
+                                    icon={<Icon as={Ionicons} name="add" size="5" color="blue.500" />}
+                                    onPress={() => updatePlantNoteLocally(item.id, plantsNotes[item.id])}
+                                    variant="ghost"
+                                    _pressed={{ bg: "gray.200" }}
+                                />
+                            </HStack>
+                        </Box>
+                    );
+                }}
+            </Pressable>
+        );
     }
 //console.log(plants)
     return (
@@ -174,7 +232,7 @@ const MyPlantsScreen = () => {
                         <FlatList
                             data={plants}
                             renderItem={plantItem}
-                            keyExtractor={(item) => item.id.toString()}
+                            keyExtractor={(item, index) => `${item.id}-${index}`}
                             contentContainerStyle={{ paddingBottom: 16 }}
                         />
                     </Box>

@@ -49,6 +49,7 @@ export const PlantDataProvider = ({ children }) => {
     };
 
     const updatePlantNote = async (id, note) => {
+        console.log(id + " " + note)
         try {
             const updatedPlants = plants.map(plant =>
                 plant.id === id ? { ...plant, note } : plant
@@ -81,9 +82,9 @@ export const PlantDataProvider = ({ children }) => {
                 const userDoc = await getDoc(userDocRef);
 
                 if (userDoc.exists()) {
-                    console.log("user docs: ", userDoc.data());
+                    //console.log("user docs: ", userDoc.data());
                     const userPlants = userDoc.data().plants || [];
-                    console.log("user plants: ", userPlants);
+                    //console.log("user plants: ", userPlants);
                     setPlants(userPlants);
                 } else {
                     console.log("user docs doesnt exist");
