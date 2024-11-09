@@ -17,47 +17,38 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Image} from "react-native";
 import Luxometer from "../../components/LuxoMeterComponent/Luxometer";
 import {getColors} from "../../theme/theme";
-import {AuthContext} from "../../context/AuthContext/AuthContext";
 
 const MyPlantsScreen = () => {
-    const { plants, removePlant, updatePlantNote, fetchUserPlantsNotes } = useContext(PlantDataContext);
     const [selectedPlant, setSelectedPlant] = useState(null);
     const [careInstructions, setCareInstructions] = useState({});
     const [lightIntensity, setLightIntensity] = useState({});
+    const [notes, setNotes] = useState({});
+    const [plantsNotes, setPlantsNotes] = useState([]);
+
+    const { plants, removePlant, updatePlantNote } = useContext(PlantDataContext);
+
     const { colorMode } = useColorMode();
     const colors = getColors(colorMode);
     const backgroundColor = colors.background;
     const backgroundBox = colors.backgroundBox;
     const textColor = colors.text;
-    const [notes, setNotes] = useState({});
-    const { db, user } = useContext(AuthContext);
-    const [plantsNotes, setPlantsNotes] = useState([]);
+
 
     const tabBarActiveTintColor = colors.tabBarActiveTintColor;
 
-    // useEffect(() => {
-    //     //console.log("NOTATKI ", JSON.stringify(notes, null, 2));
-    //     //console.log("PLANTS", JSON.stringify(plants, null, 2));
-    //     setPlantsNotes(plants);
-    // }, [notes]); // czemu tu jest [notes] ?!
-
-    // useEffect(() => {
-    //     console.log("plantsNotes ", JSON.stringify(plantsNotes, null, 2));
-    // }, []);
-
     useEffect(() => {
         setPlantsNotes(plants.map(plant => ({
+            id: plant.id,
             note: plant.note || ""
         })));
     }, [notes, plants]);
 
     const handleNoteChange = (id, text) => {
-
-        setPlantsNotes(prevPlantNotes => ({
-            ...prevPlantNotes,
-            [id]: text
-        }));
-        console.log(notes)
+        setPlantsNotes(prevPlantNotes =>
+            prevPlantNotes.map((note, index) =>
+                plants[index].id === id ? { ...note, note: text } : note
+            )
+        );
     };
 
     useEffect(() => {
@@ -65,11 +56,8 @@ const MyPlantsScreen = () => {
     })
 
     const updatePlantNoteLocally = (id, newNote) => {
-        setNotes(prevNotes => ({
-            ...prevNotes,
-            [id]: newNote
-        }));
-        updatePlantNote(id, newNote);
+        updatePlantNote(id, newNote)
+        alert("Plant's note successfully added.")
     };
 
     useEffect(() => {
@@ -89,6 +77,7 @@ const MyPlantsScreen = () => {
 
         fetchCareInstructions();
     }, [])
+
     useEffect(() => {
         const fetchLightIntensity = async () => {
             try {
@@ -155,7 +144,7 @@ const MyPlantsScreen = () => {
                                 />
                                 <IconButton
                                     icon={<Icon as={Ionicons} name="add" size="5" color="blue.500" />}
-                                    onPress={() => updatePlantNoteLocally(item.id, plantsNotes[item.id])}
+                                    onPress={() => updatePlantNoteLocally(item.id, plantsNotes[item.id].note)}
                                     variant="ghost"
                                     _pressed={{ bg: "gray.200" }}
                                 />

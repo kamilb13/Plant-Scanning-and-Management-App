@@ -1,6 +1,7 @@
 import React, {createContext, useState, useEffect, useContext} from 'react';
 import {AuthContext} from "../AuthContext/AuthContext";
 import { doc, updateDoc, arrayUnion, getDoc, arrayRemove  } from "firebase/firestore";
+
 export const PlantDataContext = createContext();
 
 export const PlantDataProvider = ({ children }) => {
@@ -99,7 +100,7 @@ export const PlantDataProvider = ({ children }) => {
 
 
     return (
-        <PlantDataContext.Provider value={{ plants, setPlants, addPlant, removePlant, getPlantsCount, updatePlantNote  }}>
+        <PlantDataContext.Provider value={{ plants, setPlants, addPlant, removePlant, getPlantsCount, updatePlantNote }}>
             {children}
         </PlantDataContext.Provider>
     );
