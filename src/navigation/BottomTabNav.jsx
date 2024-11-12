@@ -1,19 +1,18 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import HomeScreen from "../screens/HomeScreen/HomeScreen";
-import MyPlantsScreen from "../screens/MyPlantsScreen/MyPlantsScreen";
-import AccountScreen from "../screens/AccountScreen/AccountScreen";
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
+import MyPlants from '../screens/MyPlantsScreen/MyPlants';
 import { Text, useColorModeValue, useColorMode } from 'native-base';
-import {getColors} from "../theme/theme";
+import { getColors } from '../theme/theme';
+import AccountScreen from '../screens/AccountScreen/AccountScreen';
 
 const Tab = createBottomTabNavigator();
 
 const tabScreenOptions = {
     headerShown: true,
-    tabBarShowLabel: true
-
-}
+    tabBarShowLabel: true,
+};
 
 const getTabBarIcon = (route, focused, color) => {
     let iconName;
@@ -36,10 +35,7 @@ const getTabBarIcon = (route, focused, color) => {
 };
 
 const BottomTabNav = () => {
-
-
-
-    const {colorMode} = useColorMode();
+    const { colorMode } = useColorMode();
 
     const colors = getColors(colorMode);
     const tabBarActiveTintColor = colors.tabBarActiveTintColor;
@@ -54,13 +50,19 @@ const BottomTabNav = () => {
             screenOptions={({ route }) => ({
                 headerStyle: {
                     backgroundColor: headerColor,
-                     height: 80,
+                    height: 80,
                 },
                 headerTintColor: headerColorText,
 
-                tabBarIcon: ({ focused, color }) => getTabBarIcon(route, focused, color),
+                tabBarIcon: ({ focused, color }) =>
+                    getTabBarIcon(route, focused, color),
                 tabBarLabel: ({ focused }) => (
-                    <Text style={{ color: tabBarLabelColor, fontSize: focused ? 13 : 11 }} >
+                    <Text
+                        style={{
+                            color: tabBarLabelColor,
+                            fontSize: focused ? 13 : 11,
+                        }}
+                    >
                         {route.name}
                     </Text>
                 ),
@@ -69,8 +71,16 @@ const BottomTabNav = () => {
                 tabBarStyle: { backgroundColor: tabBarBackgroundColor },
             })}
         >
-            <Tab.Screen name="Home" component={HomeScreen} options={tabScreenOptions}/>
-            <Tab.Screen name="My Plants" component={MyPlantsScreen} options={tabScreenOptions}/>
+            <Tab.Screen
+                name="Home"
+                component={HomeScreen}
+                options={tabScreenOptions}
+            />
+            <Tab.Screen
+                name="My Plants"
+                component={MyPlants}
+                options={tabScreenOptions}
+            />
             <Tab.Screen
                 name="Account"
                 component={AccountScreen}
@@ -78,6 +88,6 @@ const BottomTabNav = () => {
             />
         </Tab.Navigator>
     );
-}
+};
 
 export default BottomTabNav;

@@ -1,15 +1,22 @@
-import React, {useContext} from "react";
-import {Text, Button, Input, Box, Center, useColorMode} from 'native-base';
-import {AuthContext} from "../../context/AuthContext/AuthContext";
-import {TouchableOpacity} from "react-native";
-import {Ionicons} from "@expo/vector-icons";
-import {getColors} from "../../theme/theme";
+import React, { useContext } from 'react';
+import { Text, Button, Input, Box, Center, useColorMode } from 'native-base';
+import { AuthContext } from '../../context/AuthContext/AuthContext';
+import { TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { getColors } from '../../theme/theme';
 
 const LoginRegisterForm = ({ navigation }) => {
-    const { handleAuthentication } = useContext(AuthContext);
-    const { isLogin, setIsLogin } = useContext(AuthContext);
-    const { email, setEmail } = useContext(AuthContext);
-    const { password, setPassword } = useContext(AuthContext);
+    const {
+        handleAuthentication,
+        isLogin,
+        setIsLogin,
+        email,
+        setEmail,
+        password,
+        setPassword,
+        setErrorMessage,
+    } = useContext(AuthContext);
+
     //console.log(navigation);
     const { colorMode } = useColorMode();
     const colors = getColors(colorMode);
@@ -19,8 +26,22 @@ const LoginRegisterForm = ({ navigation }) => {
     const tabBarActiveTintColor = colors.tabBarActiveTintColor;
 
     return (
-        <Box width="80%" maxWidth={400} bg="white" p={4} borderRadius="lg" shadow={2} backgroundColor={backgroundColor}>
-            <Text color={textColor} fontSize="2xl" fontWeight="bold" mb={4} textAlign="center">
+        <Box
+            width="80%"
+            maxWidth={400}
+            bg="white"
+            p={4}
+            borderRadius="lg"
+            shadow={2}
+            backgroundColor={backgroundColor}
+        >
+            <Text
+                color={textColor}
+                fontSize="2xl"
+                fontWeight="bold"
+                mb={4}
+                textAlign="center"
+            >
                 {isLogin ? 'Sign In' : 'Sign Up'}
             </Text>
 
@@ -36,12 +57,17 @@ const LoginRegisterForm = ({ navigation }) => {
                 backgroundColor={backgroundBox}
                 _focus={{
                     borderColor: tabBarActiveTintColor,
-                    bg: "gray.100",
-                    color: textColor
+                    bg: 'gray.100',
+                    color: textColor,
                 }}
                 InputLeftElement={
-                    <Ionicons name="mail-outline" size={20} color="#c7c7c7" marginLeft={10}/>
-            }
+                    <Ionicons
+                        name="mail-outline"
+                        size={20}
+                        color="#c7c7c7"
+                        marginLeft={10}
+                    />
+                }
             />
 
             <Input
@@ -56,16 +82,24 @@ const LoginRegisterForm = ({ navigation }) => {
                 backgroundColor={backgroundBox}
                 _focus={{
                     borderColor: tabBarActiveTintColor,
-                    bg: "gray.100",
-                    color: textColor
+                    bg: 'gray.100',
+                    color: textColor,
                 }}
                 InputLeftElement={
-                    <Ionicons name="lock-closed-outline" size={20} color="#c7c7c7" marginLeft={10}/>
+                    <Ionicons
+                        name="lock-closed-outline"
+                        size={20}
+                        color="#c7c7c7"
+                        marginLeft={10}
+                    />
                 }
             />
 
             <Button
-                onPress={handleAuthentication}
+                onPress={() => {
+                    handleAuthentication();
+                    setErrorMessage('');
+                }}
                 bg={tabBarActiveTintColor}
                 mb={4}
             >
@@ -77,17 +111,25 @@ const LoginRegisterForm = ({ navigation }) => {
                 textAlign="center"
                 onPress={() => setIsLogin(!isLogin)}
             >
-                {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Sign In'}
+                {isLogin
+                    ? 'Need an account? Sign Up'
+                    : 'Already have an account? Sign In'}
             </Text>
-            {isLogin === true ?
+            {isLogin === true ? (
                 <>
                     <Center>
-                        <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")} >
-                            <Text color={textColor} marginTop={10}>Forgot Password?</Text>
+                        <TouchableOpacity
+                            onPress={() =>
+                                navigation.navigate('ForgotPassword')
+                            }
+                        >
+                            <Text color={textColor} marginTop={10}>
+                                Forgot Password?
+                            </Text>
                         </TouchableOpacity>
                     </Center>
                 </>
-            : null}
+            ) : null}
         </Box>
     );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text, Button, Input, Box, Center, useColorMode} from 'native-base';
-import {getColors} from "../../theme/theme";
-import {View} from "react-native";
+import { Text, Button, Input, Box, Center, useColorMode } from 'native-base';
+import { getColors } from '../../theme/theme';
+import { View } from 'react-native';
 
 interface PlantInfoProps {
     plantName: string;
@@ -9,7 +9,11 @@ interface PlantInfoProps {
     onRetake: () => void;
 }
 
-const PlantInfo: React.FC<PlantInfoProps> = ({ plantName, probability, onRetake }) => {
+const PlantInfo: React.FC<PlantInfoProps> = ({
+    plantName,
+    probability,
+    onRetake,
+}) => {
     const { colorMode } = useColorMode();
     const colors = getColors(colorMode);
     const backgroundColor = colors.background;
@@ -19,13 +23,17 @@ const PlantInfo: React.FC<PlantInfoProps> = ({ plantName, probability, onRetake 
     return (
         <Center>
             {/*<Text color={textColor}>Plant recognized:</Text>*/}
-            <Text color={textColor} fontSize={22} mt={4}>{plantName}</Text>
-            <Text color="gray.400" mt={4}>Probability: {(probability * 100).toFixed(2)}%</Text>
-            <Button onPress={onRetake} mt={4} bg="green.500">Take photo again</Button>
+            <Text color={textColor} fontSize={22} mt={4}>
+                {plantName}
+            </Text>
+            <Text color="gray.400" mt={4}>
+                Probability: {(probability * 100).toFixed(2)}%
+            </Text>
+            <Button onPress={onRetake} mt={4} bg="green.500">
+                Take photo again
+            </Button>
         </Center>
     );
 };
-
-
 
 export default PlantInfo;

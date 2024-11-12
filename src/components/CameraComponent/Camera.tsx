@@ -1,24 +1,27 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import React, {useContext, useRef, useState} from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Image } from 'react-native';
-import PlantInfo from "../PlantInfoComponent/PlantInfo";
 import * as ImagePicker from 'expo-image-picker';
 import { PLANT_API_KEY } from '@env';
-import {PlantDataContext} from "../../context/PlantDataContext/PlantDataContext";
-import {Ionicons} from "@expo/vector-icons";
+import { PlantDataContext } from '../../context/PlantDataContext/PlantDataContext';
+import { Ionicons } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
+import PlantInfo from '../PlantInfoComponent/PlantInfo';
 
-
-const CameraComponent = () => {
+const Camera = () => {
     const [facing, setFacing] = useState<CameraType>('back');
     const [permission, requestPermission] = useCameraPermissions();
     const [photo, setPhoto] = useState<string | null>(null);
     const cameraRef = useRef<CameraView>(null);
     const [cameraVisible, setCameraVisible] = useState(true);
-    const [plantData, setPlantData] = useState<{ name: string; probability: number, photo: string } | null>(null);
+    const [plantData, setPlantData] = useState<{
+        name: string;
+        probability: number;
+        photo: string;
+    } | null>(null);
     const { addPlant } = useContext(PlantDataContext);
-    const [id, setId] = useState(0)
+    const [id, setId] = useState(0);
 
     if (!permission) {
         return <View />;
@@ -27,15 +30,17 @@ const CameraComponent = () => {
     if (!permission.granted) {
         return (
             <View style={styles.container}>
-                <Text style={styles.message}>We need your permission to show the camera</Text>
+                <Text style={styles.message}>
+                    We need your permission to show the camera
+                </Text>
                 <Button onPress={requestPermission} title="Grant Permission" />
             </View>
         );
     }
 
     const toggleCameraFacing = () => {
-        setFacing(current => (current === 'back' ? 'front' : 'back'));
-    }
+        setFacing((current) => (current === 'back' ? 'front' : 'back'));
+    };
     interface PlantApiResponse {
         result: {
             is_plant: {
@@ -70,27 +75,32 @@ const CameraComponent = () => {
             // Konwertujemy łańcuch tekstowy na obiekt
             //const parsedResponse = JSON.parse(apiResponse);
 
-
             if (apiResponse) {
                 const isPlant = apiResponse.result.is_plant;
                 if (isPlant.binary) {
-                    const suggestions = apiResponse.result.classification.suggestions;
+                    const suggestions =
+                        apiResponse.result.classification.suggestions;
 
                     if (Array.isArray(suggestions) && suggestions.length > 0) {
                         const firstSuggestion = suggestions[0];
-                        setPlantData({ name: firstSuggestion.name, probability: firstSuggestion.probability, photo: newPhoto.uri });
+                        setPlantData({
+                            name: firstSuggestion.name,
+                            probability: firstSuggestion.probability,
+                            photo: newPhoto.uri,
+                        });
                     } else {
-                        alert("Brak sugestii rozpoznania rośliny.");
+                        alert('Brak sugestii rozpoznania rośliny.');
                     }
                 } else {
-                    alert("To nie jest roślina.");
+                    alert('To nie jest roślina.');
                 }
             }
         }
-    }
+    };
 
     const pickImage = async () => {
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const permissionResult =
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (permissionResult.granted === false) {
             alert('Proszę o zezwolenie na dostęp do biblioteki zdjęć!');
@@ -108,9 +118,12 @@ const CameraComponent = () => {
             const selectedPhoto = result.assets[0].uri;
             setPhoto(selectedPhoto);
             setCameraVisible(false);
-            const selectedPhotoBase64 = await FileSystem.readAsStringAsync(selectedPhoto, {
-                encoding: FileSystem.EncodingType.Base64,
-            });
+            const selectedPhotoBase64 = await FileSystem.readAsStringAsync(
+                selectedPhoto,
+                {
+                    encoding: FileSystem.EncodingType.Base64,
+                }
+            );
             // selectedPhoto!!!!
             const apiResponse = await sendPhotoToApi(selectedPhotoBase64);
 
@@ -120,20 +133,24 @@ const CameraComponent = () => {
             // Konwertujemy łańcuch tekstowy na obiekt
             //const parsedResponse = JSON.parse(apiResponse);
 
-
             if (apiResponse) {
                 const isPlant = apiResponse.result.is_plant;
                 if (isPlant.binary) {
-                    const suggestions = apiResponse.result.classification.suggestions;
+                    const suggestions =
+                        apiResponse.result.classification.suggestions;
 
                     if (Array.isArray(suggestions) && suggestions.length > 0) {
                         const firstSuggestion = suggestions[0];
-                        setPlantData({ name: firstSuggestion.name, probability: firstSuggestion.probability, photo: selectedPhoto });
+                        setPlantData({
+                            name: firstSuggestion.name,
+                            probability: firstSuggestion.probability,
+                            photo: selectedPhoto,
+                        });
                     } else {
-                        alert("Brak sugestii rozpoznania rośliny.");
+                        alert('Brak sugestii rozpoznania rośliny.');
                     }
                 } else {
-                    alert("To nie jest roślina.");
+                    alert('To nie jest roślina.');
                 }
             }
         }
@@ -147,13 +164,13 @@ const CameraComponent = () => {
     const savePlantData = () => {
         if (plantData) {
             setId(id + 1);
-            addPlant({id, ...plantData})
+            addPlant({ id, ...plantData });
         }
-        setPlantData(null)
-        setCameraVisible(true)
+        setPlantData(null);
+        setCameraVisible(true);
     };
 
-    const sendPhotoToApi = async(photoBase64: string) => {
+    const sendPhotoToApi = async (photoBase64: string) => {
         const apiUrl = 'https://plant.id/api/v3/identification';
         const apiKey = PLANT_API_KEY;
 
@@ -173,29 +190,45 @@ const CameraComponent = () => {
 
             return await response.json();
         } catch (error) {
-            console.error("Błąd podczas wysyłania zdjęcia do API", error);
+            console.error('Błąd podczas wysyłania zdjęcia do API', error);
             return null;
         }
-    }
+    };
 
     return (
         <View style={styles.container}>
             {cameraVisible ? (
                 <>
-                    <CameraView style={styles.camera} facing={facing} ref={cameraRef}/>
+                    <CameraView
+                        style={styles.camera}
+                        facing={facing}
+                        ref={cameraRef}
+                    />
                     <View style={styles.iconContainer}>
-                        <TouchableOpacity style={styles.iconButton} onPress={toggleCameraFacing}>
-                            <Ionicons name="camera-reverse" size={30} color="#ffffff" />
+                        <TouchableOpacity
+                            style={styles.iconButton}
+                            onPress={toggleCameraFacing}
+                        >
+                            <Ionicons
+                                name="camera-reverse"
+                                size={30}
+                                color="#ffffff"
+                            />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconButton} onPress={takePhoto}>
+                        <TouchableOpacity
+                            style={styles.iconButton}
+                            onPress={takePhoto}
+                        >
                             <Ionicons name="camera" size={30} color="#ffffff" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconButton} onPress={pickImage}>
+                        <TouchableOpacity
+                            style={styles.iconButton}
+                            onPress={pickImage}
+                        >
                             <Ionicons name="image" size={30} color="#ffffff" />
                         </TouchableOpacity>
                     </View>
                 </>
-
             ) : (
                 <View>
                     {photo && (
@@ -211,21 +244,30 @@ const CameraComponent = () => {
                             probability={plantData.probability}
                             onRetake={resetPhoto}
                         />
-                    ): <Text style={{color:"#838383"}}>Loading data...</Text>}
-                    <TouchableOpacity style={styles.addPlantButton} onPress={savePlantData}>
-                        <Text style={styles.addPlantButtonText}>Add plant to your collection</Text>
+                    ) : (
+                        <Text style={{ color: '#838383' }}>
+                            Loading data...
+                        </Text>
+                    )}
+                    <TouchableOpacity
+                        style={styles.addPlantButton}
+                        onPress={savePlantData}
+                    >
+                        <Text style={styles.addPlantButtonText}>
+                            Add plant to your collection
+                        </Text>
                     </TouchableOpacity>
                 </View>
             )}
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-},
+    },
     message: {
         textAlign: 'center',
         paddingBottom: 10,
@@ -278,4 +320,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CameraComponent;
+export default Camera;

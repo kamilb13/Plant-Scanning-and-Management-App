@@ -1,7 +1,14 @@
 import React from 'react';
-import {NativeBaseProvider, Box, Text, Button, Center, useColorMode} from 'native-base';
-import CameraComponent from "../../components/CameraComponent/CameraComponent";
-import {getColors} from "../../theme/theme";
+import {
+    NativeBaseProvider,
+    Box,
+    Text,
+    Button,
+    Center,
+    useColorMode,
+} from 'native-base';
+import Camera from '../../components/CameraComponent/Camera';
+import { getColors } from '../../theme/theme';
 
 const HomeScreen = () => {
     const { colorMode } = useColorMode();
@@ -11,7 +18,7 @@ const HomeScreen = () => {
 
     return (
         <Center flex={1} px={4} backgroundColor={backgroundColor}>
-            <Box alignItems="center" >
+            <Box alignItems="center">
                 <Text
                     color={textColor}
                     fontSize="3xl"
@@ -28,7 +35,7 @@ const HomeScreen = () => {
                 >
                     Take a photo of plant!
                 </Text>
-                <CameraComponent />
+                <Camera />
             </Box>
         </Center>
     );

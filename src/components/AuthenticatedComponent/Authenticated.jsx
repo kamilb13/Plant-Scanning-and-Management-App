@@ -1,11 +1,11 @@
-import React, {useContext } from 'react';
-import {Box, Text, Button, useColorMode} from 'native-base';
-import {AuthContext} from "../../context/AuthContext/AuthContext";
-import {PlantDataContext} from "../../context/PlantDataContext/PlantDataContext";
-import {View} from "react-native";
-import {getColors} from "../../theme/theme";
+import React, { useContext } from 'react';
+import { Box, Text, Button, useColorMode } from 'native-base';
+import { AuthContext } from '../../context/AuthContext/AuthContext';
+import { PlantDataContext } from '../../context/PlantDataContext/PlantDataContext';
+import { View } from 'react-native';
+import { getColors } from '../../theme/theme';
 
-const AuthorizedComponent = ({ navigation }) => {
+const Authenticated = ({ navigation }) => {
     const { user } = useContext(AuthContext);
     const { getPlantsCount } = useContext(PlantDataContext);
 
@@ -30,7 +30,7 @@ const AuthorizedComponent = ({ navigation }) => {
             justifyContent="center"
             mx="auto"
         >
-            <View style={{flexDirection: "row"}}>
+            <View style={{ flexDirection: 'row' }}>
                 {/*<Text color={textColor} fontSize="lg" fontWeight="bold" mb={3} marginRight={1}>*/}
                 {/*    Hi!*/}
                 {/*</Text>*/}
@@ -54,4 +54,4 @@ const AuthorizedComponent = ({ navigation }) => {
     );
 };
 
-export default AuthorizedComponent;
+export default Authenticated;
