@@ -31,6 +31,9 @@ const MyPlants = () => {
     const [notes, setNotes] = useState({});
     const [plantsNotes, setPlantsNotes] = useState([]);
 
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredPlants, setFilteredPlants] = useState([]);
+
     const { plants, removePlant, updatePlantNote } =
         useContext(PlantDataContext);
 
@@ -41,6 +44,19 @@ const MyPlants = () => {
     const textColor = colors.text;
 
     const tabBarActiveTintColor = colors.tabBarActiveTintColor;
+
+    useEffect(() => {
+        setFilteredPlants(plants);
+    }, []);
+
+    const handleSearchChange = (text) => {
+        setSearchQuery(text);
+        setFilteredPlants(
+            plants.filter((plant) =>
+                plant.name.toLowerCase().includes(text.toLowerCase())
+            )
+        );
+    };
 
     useEffect(() => {
         setPlantsNotes(
@@ -58,10 +74,6 @@ const MyPlants = () => {
             )
         );
     };
-
-    useEffect(() => {
-        console.log('plantsNotes ', JSON.stringify(plantsNotes, null, 2));
-    });
 
     const updatePlantNoteLocally = (id, newNote) => {
         updatePlantNote(id, newNote);
@@ -291,9 +303,25 @@ const MyPlants = () => {
             ) : plants.length === 0 ? (
                 <Text fontSize="2xl">You haven't added any plants yet!</Text>
             ) : (
-                <Box alignItems="center" width="100%">
+                <Box alignItems="center" width="100%" flex={1}>
+                    <TextArea
+                        placeholder="Search plant"
+                        value={searchQuery}
+                        onChangeText={handleSearchChange}
+                        h={10}
+                        mt={4}
+                        mb={4}
+                        fontSize={15}
+                        placeholderTextColor={textColor}
+                        backgroundColor={backgroundBox}
+                        _focus={{
+                            borderColor: tabBarActiveTintColor,
+                            bg: 'gray.100',
+                            color: textColor,
+                        }}
+                    />
                     <FlatList
-                        data={plants}
+                        data={filteredPlants}
                         renderItem={plantItem}
                         keyExtractor={(item, index) => `${item.id}-${index}`}
                         contentContainerStyle={{ paddingBottom: 16 }}
