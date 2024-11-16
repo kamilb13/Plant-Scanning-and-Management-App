@@ -1,20 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    NativeBaseProvider,
     Box,
     Text,
     Center,
     FlatList,
     VStack,
-    Heading,
     Button,
     TextArea,
     Pressable,
     HStack,
-    Badge,
     Spacer,
-    Flex,
-    useColorModeValue,
     useColorMode,
 } from 'native-base';
 import { PlantDataContext } from '../../context/PlantDataContext/PlantDataContext';
@@ -28,7 +23,7 @@ const MyPlants = () => {
     const [selectedPlant, setSelectedPlant] = useState(null);
     const [careInstructions, setCareInstructions] = useState({});
     const [lightIntensity, setLightIntensity] = useState({});
-    const [notes, setNotes] = useState({});
+    const [notes] = useState({});
     const [plantsNotes, setPlantsNotes] = useState([]);
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -47,7 +42,7 @@ const MyPlants = () => {
 
     useEffect(() => {
         setFilteredPlants(plants);
-    }, []);
+    }, [plants]);
 
     const handleSearchChange = (text) => {
         setSearchQuery(text);

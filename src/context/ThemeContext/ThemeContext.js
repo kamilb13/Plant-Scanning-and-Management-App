@@ -1,8 +1,6 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-    useColorMode,
-} from 'native-base';
+import { useColorMode } from 'native-base';
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
@@ -12,7 +10,7 @@ export const ThemeProvider = ({ children }) => {
         try {
             await AsyncStorage.setItem('themePreference', mode);
         } catch (error) {
-            console.log("Error saving theme preference:", error);
+            console.log('Error saving theme preference:', error);
         }
     };
 
@@ -25,16 +23,17 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         const loadThemePreference = async () => {
             try {
-                const savedTheme = await AsyncStorage.getItem('themePreference');
+                const savedTheme =
+                    await AsyncStorage.getItem('themePreference');
                 if (savedTheme && savedTheme !== colorMode) {
                     toggleColorMode();
                 }
             } catch (error) {
-                console.log("Error loading theme preference:", error);
+                console.log('Error loading theme preference:', error);
             }
         };
         loadThemePreference();
-    }, []);
+    }, [colorMode, toggleColorMode]);
 
     return (
         <ThemeContext.Provider value={{ colorMode, handleToggleColorMode }}>

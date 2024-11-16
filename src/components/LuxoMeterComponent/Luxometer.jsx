@@ -32,14 +32,12 @@ const Luxometer = ({ luxRange }) => {
     };
 
     useEffect(() => {
-        //subscribe();
-        //return () => unsubscribe();
         if (luxRange && typeof luxRange === 'string') {
             const [minValue, maxValue] = luxRange.split('-').map(Number);
             setMinValue(minValue);
             setMaxValue(maxValue);
         }
-    }, []);
+    }, [luxRange]);
 
     return (
         <Box

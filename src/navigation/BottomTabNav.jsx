@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import MyPlants from '../screens/MyPlantsScreen/MyPlants';
-import { Text, useColorModeValue, useColorMode } from 'native-base';
+import { Text, useColorMode } from 'native-base';
 import { getColors } from '../theme/theme';
 import AccountScreen from '../screens/AccountScreen/AccountScreen';
 

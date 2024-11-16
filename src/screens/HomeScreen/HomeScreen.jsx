@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    NativeBaseProvider,
-    Box,
-    Text,
-    Button,
-    Center,
-    useColorMode,
-} from 'native-base';
+import { Box, Text, Center, useColorMode } from 'native-base';
 import Camera from '../../components/CameraComponent/Camera';
 import { getColors } from '../../theme/theme';
 

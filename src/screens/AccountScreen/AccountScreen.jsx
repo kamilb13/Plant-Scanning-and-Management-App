@@ -21,11 +21,10 @@ const AccountScreen = ({ navigation }) => {
         useContext(AuthContext);
     const [newPassword, setNewPassword] = useState('');
     const [errorMessageForUpdate, setErrorMessageForUpdate] = useState('');
-    const [showSuccess, setShowSuccess] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
     const [changePassword, setChangePassword] = useState(false);
 
-    const { toggleColorMode, colorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     const colors = getColors(colorMode);
     const backgroundColor = colors.background;
     const backgroundBox = colors.backgroundBox;
@@ -33,10 +32,6 @@ const AccountScreen = ({ navigation }) => {
     const iconColor = colors.icon;
     const tabBarActiveTintColor = colors.tabBarActiveTintColor;
     const { handleToggleColorMode } = useContext(ThemeContext);
-
-    console.log('Background Color:', backgroundColor);
-    console.log('Text Color:', textColor);
-    console.log('Icon Color:', iconColor);
 
     const animationHeight = useRef(new Animated.Value(0)).current;
 
@@ -71,7 +66,7 @@ const AccountScreen = ({ navigation }) => {
                     style: 'cancel',
                 },
                 {
-                    text: 'OK', // Przycisk potwierdzenia
+                    text: 'OK',
                     onPress: updatePassword,
                 },
             ]
@@ -88,7 +83,6 @@ const AccountScreen = ({ navigation }) => {
                 await handleUpdatePassword(
                     newPassword,
                     currentPassword,
-                    setShowSuccess,
                     setErrorMessageForUpdate
                 );
                 handleAuthentication();
@@ -110,7 +104,7 @@ const AccountScreen = ({ navigation }) => {
             duration: 300,
             useNativeDriver: false,
         }).start();
-    }, [changePassword]);
+    }, [changePassword, animationHeight]);
 
     return (
         <Center flex={1} px={4} bg={backgroundColor}>

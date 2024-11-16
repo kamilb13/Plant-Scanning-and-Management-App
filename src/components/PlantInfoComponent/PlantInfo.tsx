@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, Button, Input, Box, Center, useColorMode } from 'native-base';
+import { Text, Button, Center, useColorMode } from 'native-base';
 import { getColors } from '../../theme/theme';
-import { View } from 'react-native';
 
 interface PlantInfoProps {
     plantName: string;
@@ -16,8 +15,6 @@ const PlantInfo: React.FC<PlantInfoProps> = ({
 }) => {
     const { colorMode } = useColorMode();
     const colors = getColors(colorMode);
-    const backgroundColor = colors.background;
-    const backgroundBox = colors.backgroundBox;
     const textColor = colors.text;
 
     return (

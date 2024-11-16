@@ -41,26 +41,6 @@ const Camera = () => {
     const toggleCameraFacing = () => {
         setFacing((current) => (current === 'back' ? 'front' : 'back'));
     };
-    interface PlantApiResponse {
-        result: {
-            is_plant: {
-                probability: number;
-                threshold: number;
-                binary: boolean;
-            };
-            classification: {
-                suggestions: {
-                    id: string;
-                    name: string;
-                    probability: number;
-                    details: {
-                        language: string;
-                        entity_id: string;
-                    };
-                }[];
-            };
-        };
-    }
 
     const takePhoto = async () => {
         if (cameraRef.current) {
@@ -71,8 +51,6 @@ const Camera = () => {
             const apiResponse = await sendPhotoToApi(newPhoto.base64);
             // Testtowy zabieg dla oszczedzania credits z API
             //let apiResponse: string = "{\"access_token\":\"vRvwolohK05HagN\",\"model_version\":\"plant_id:4.1.2\",\"custom_id\":null,\"input\":{\"latitude\":null,\"longitude\":null,\"images\":[\"https://plant.id/media/imgs/c3e513ef023e447dbb3d3d00128f3019.jpg\"],\"datetime\":\"2024-10-22T17:41:31.663245+00:00\"},\"result\":{\"is_plant\":{\"probability\":0.9993554,\"threshold\":0.5,\"binary\":true},\"classification\":{\"suggestions\":[{\"id\":\"5851470284ce3834\",\"name\":\"Kalanchoe blossfeldiana\",\"probability\":0.9045,\"details\":{\"language\":\"en\",\"entity_id\":\"5851470284ce3834\"}},{\"id\":\"2b6d180066203936\",\"name\":\"Schlumbergera truncata\",\"probability\":0.0398,\"details\":{\"language\":\"en\",\"entity_id\":\"2b6d180066203936\"}},{\"id\":\"73d08d6ac79df434\",\"name\":\"Ficus\",\"probability\":0.0216,\"details\":{\"language\":\"en\",\"entity_id\":\"73d08d6ac79df434\"}},{\"id\":\"e334e61577ee15a0\",\"name\":\"Crassula\",\"probability\":0.011,\"details\":{\"language\":\"en\",\"entity_id\":\"e334e61577ee15a0\"}}]}},\"status\":\"COMPLETED\",\"sla_compliant_client\":true,\"sla_compliant_system\":true,\"created\":1729618891.663245,\"completed\":1729618892.24605}";
-
-            // Konwertujemy łańcuch tekstowy na obiekt
             //const parsedResponse = JSON.parse(apiResponse);
 
             if (apiResponse) {
@@ -113,7 +91,6 @@ const Camera = () => {
             quality: 1,
         });
 
-        //console.log(result)
         if (!result.canceled) {
             const selectedPhoto = result.assets[0].uri;
             setPhoto(selectedPhoto);
@@ -124,13 +101,10 @@ const Camera = () => {
                     encoding: FileSystem.EncodingType.Base64,
                 }
             );
-            // selectedPhoto!!!!
             const apiResponse = await sendPhotoToApi(selectedPhotoBase64);
 
             // Testtowy zabieg dla oszczedzania credits z API
             //let apiResponse: string = "{\"access_token\":\"vRvwolohK05HagN\",\"model_version\":\"plant_id:4.1.2\",\"custom_id\":null,\"input\":{\"latitude\":null,\"longitude\":null,\"images\":[\"https://plant.id/media/imgs/c3e513ef023e447dbb3d3d00128f3019.jpg\"],\"datetime\":\"2024-10-22T17:41:31.663245+00:00\"},\"result\":{\"is_plant\":{\"probability\":0.9993554,\"threshold\":0.5,\"binary\":true},\"classification\":{\"suggestions\":[{\"id\":\"5851470284ce3834\",\"name\":\"Kalanchoe blossfeldiana\",\"probability\":0.9045,\"details\":{\"language\":\"en\",\"entity_id\":\"5851470284ce3834\"}},{\"id\":\"2b6d180066203936\",\"name\":\"Schlumbergera truncata\",\"probability\":0.0398,\"details\":{\"language\":\"en\",\"entity_id\":\"2b6d180066203936\"}},{\"id\":\"73d08d6ac79df434\",\"name\":\"Ficus\",\"probability\":0.0216,\"details\":{\"language\":\"en\",\"entity_id\":\"73d08d6ac79df434\"}},{\"id\":\"e334e61577ee15a0\",\"name\":\"Crassula\",\"probability\":0.011,\"details\":{\"language\":\"en\",\"entity_id\":\"e334e61577ee15a0\"}}]}},\"status\":\"COMPLETED\",\"sla_compliant_client\":true,\"sla_compliant_system\":true,\"created\":1729618891.663245,\"completed\":1729618892.24605}";
-
-            // Konwertujemy łańcuch tekstowy na obiekt
             //const parsedResponse = JSON.parse(apiResponse);
 
             if (apiResponse) {
