@@ -14,7 +14,8 @@ Aplikacja mobilna, która umożliwia skanowanie roślin za pomocą aparatu, iden
 - 🌱 **Dodawanie rozpoznanych roślin do swojej kolekcji**.  
 - 📂 **Zakładka My Plants** z listą wszystkich roślin użytkownika. Dane są zapisywane w Firebase Database:
   - 📖 **Pobieranie szczegółowych informacji** o wybranych roślinach z `json-server`.  
-  - 📝 **Możliwość dodania notatki** do każdej rośliny w kolekcji.    
+  - 📝 **Możliwość dodania notatki** do każdej rośliny w kolekcji.
+  - **Możliwość sprawdzenia natężenia światła** sprawdzenia czy dana roślina jest dobrze nasłoneczniona w danym miejscu np. w domu na parapecie (sensor)
 - 🔧 **Zakładka Account**:  
   - Wylogowanie.  
   - Zmiana hasła.  
